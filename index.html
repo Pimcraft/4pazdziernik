@@ -94,8 +94,8 @@
         #results-table tbody tr { border-bottom: 1px solid var(--border-color); }
         #results-table tbody tr:nth-child(even) { background-color: rgba(15, 52, 96, 0.3); }
         .hidden { display: none !important; }
-		
-		 /* --- NOWE STYLE SEKCJI SZCZEGÓŁÓW --- */
+        
+         /* --- NOWE STYLE SEKCJI SZCZEGÓŁÓW --- */
         .details-section {
             text-align: left;
             margin-top: 3rem;
@@ -123,14 +123,14 @@
             width: 100%;
             font-size: 0.9rem;
         }
-		.transport-table td {
-			padding: 0.5rem;
-			border-bottom: 1px solid var(--border-color);
-			white-space: nowrap; /* Ta linia zapobiega zawijaniu tekstu */
-		}
+        .transport-table td {
+            padding: 0.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
 
         .transport-table td:first-child {
-            width: 140px; /* Zwiększona szerokość dla nazw przystanków */
+            width: 140px;
+            white-space: nowrap;
         }
         .map-gallery {
             display: flex;
@@ -183,12 +183,12 @@
             color: white;
             cursor: pointer;
         }
-		 .transport-icon {
+         .transport-icon {
             display: inline-block;
             width: 30px;
             text-align: center;
         }
-		
+        
     </style>
 </head>
 <body>
@@ -242,7 +242,7 @@
                 <button id="spin-button">Rozpocznij losowanie!</button>
             </div>
         </div>
-       
+        
         <div id="results-section">
             <h2 id="result-announcement"></h2>
             <h3>Aktualna lista gości i kuchni</h3>
@@ -261,14 +261,30 @@
             </table>
         </div>
     </div>
-	<div class="container details-section">
+    <div class="container details-section">
         <h2>Szczegóły Imprezy</h2>
         
         <div class="details-box">
             <h3>🗓️ Czas, Miejsce i Zasady</h3>
             <p><strong>Kiedy:</strong> Sobota, 4 października 2025, start o <strong>18:00</strong>.<br>
                <strong>Gdzie:</strong> ul. Awicenny 32a/12, Wrocław.</p>
-            <p style="margin-bottom: 0;">Każda osoba/para przygotowuje <strong>tylko jedno danie</strong> z wylosowanej kuchni. Na miejscu dostępne będą wino, whisky, wódka, napoje i przekąski. Prosimy nie przynosić za dużo jedzenia!</p>
+            <p style="margin-bottom: 0;">Każda osoba/para przygotowuje <strong>tylko jedno danie</strong> z wylosowanej kuchni. Prosimy nie przynosić za dużo jedzenia, aby nic się nie zmarnowało!</p>
+        </div>
+
+        <div class="details-box">
+            <h3>🥂 Alkohole i Nastrój</h3>
+            <p>🍷 Zapewniamy <strong>wino białe wytrawne</strong>.<br>
+               🥃 Dostępne będzie również <strong>whisky</strong>.<br>
+               🧊 Dla fanów mocniejszych trunków czekać będzie <strong>wódka</strong>.<br>
+               🥤 Oczywiście nie zabraknie też <strong>napojów bezalkoholowych</strong> i przekąsek.<br>
+               👕 Obowiązuje strój <strong>luźny i wygodny</strong>.<br>
+               😊 Nastrój: <strong>poprawny</strong> (przynajmniej na starcie)!
+            </p>
+        </div>
+
+         <div class="details-box">
+            <h3>❗ Ważne Info / Alergeny</h3>
+            <p style="margin-bottom: 0;">🐈‍⬛ Ostrzeżenie dla alergików i pedantów! W domu rezydują dwa koty (<strong>czarny ⚫</strong> i <strong>biało-bury ⚪</strong>). Ich sierść jest integralną częścią wystroju mieszkania i na pewno wyjdziecie nią oblepieni. Zapewniamy rolkę do ubrań! ✨</p>
         </div>
 
         <div class="details-box">
@@ -278,11 +294,12 @@
                     <tr><td><span class="transport-icon">✈️</span> Lotnisko</td><td>ok. 20 min samochodem</td></tr>
                     <tr><td><span class="transport-icon">🚆</span> Dworzec Zach.</td><td>ok. 5 min pieszo 🚶</td></tr>
                     <tr><td><span class="transport-icon">🅿️</span> Parking Biedronka</td><td>2 min pieszo 🚶</td></tr>
-                    <tr><td><span class="transport-icon">🚌</span> <strong>Chachaja</strong></td><td>132 (pod domem)</td></tr>
-                    <tr><td><span class="transport-icon">🚌</span> <strong>Jordanowska</strong></td><td>132, 125, 907, 947 (4 min pieszo 🚶)</td></tr>
-                    <tr><td><span class="transport-icon">🚌</span> <strong>Wiejska</strong></td><td>107, 119, 125, (...) (7 min pieszo 🚶)</td></tr>
-                    <tr><td><span class="transport-icon">🚊</span> <strong>Pętla Oporów</strong></td><td>4, 11, 20 oraz autobusy (8 min pieszo 🚶)</td></tr>
+                    <tr><td><span class="transport-icon">🚌</span> <strong>Chachaja</strong></td><td>Linia: 132 (pod samym domem)</td></tr>
+                    <tr><td><span class="transport-icon">🚌</span> <strong>Jordanowska</strong></td><td>Linie: 132, 125, 907, 947 (4 min pieszo 🚶)</td></tr>
+                    <tr><td><span class="transport-icon">🚌</span> <strong>Wiejska</strong></td><td>Linie: 107, 119, 125, 132, 143, 251, 257, 319, 607, 907, 947 (7 min pieszo 🚶)</td></tr>
+                    <tr><td><span class="transport-icon">🚊</span> <strong>Pętla Oporów</strong></td><td>Tramwaje: 4, 11, 20. Autobusy: 107, 119, 125, 143, 251, 319 (8 min pieszo 🚶)</td></tr>
                     <tr><td><span class="transport-icon">🚢</span> Statek</td><td>Ruch morski niedostępny</td></tr>
+                    <tr><td><span class="transport-icon">🛸</span> Dron</td><td>Ruch dronowy dostępny tylko ze wschodu</td></tr>
                 </tbody>
             </table>
         </div>
@@ -296,13 +313,14 @@
             </div>
         </div>
     </div>
-	
+    
 
 <script>
 // 1. KONFIGURACJA
 const JSONBIN_API_KEY = '$2a$10$uss5q/ZpmJgrr7GzC4iEbeG3Px6iazRf/KFqHsIUnm/85HaEFl5Fm';
 const JSONBIN_BIN_ID = '68ca4e62d0ea881f4080a276';
 const JSONBIN_URL = `https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`;
+const MAX_RETRIES = 5;
 
 // 2. REFERENCJE DO ELEMENTÓW DOM
 const steps = {
@@ -350,10 +368,8 @@ const renderHistoryTable = () => {
     });
 };
 
-// ZUPEŁNIE NOWA FUNKCJA INICJALIZUJĄCA
 const initializeCarousel = (cuisines) => {
     carouselTrack.innerHTML = '';
-    // Tworzymy dłuższą listę, aby animacja była płynna
     const extendedCuisines = [...cuisines, ...cuisines, ...cuisines, ...cuisines, ...cuisines];
     
     extendedCuisines.forEach(cuisine => {
@@ -365,33 +381,54 @@ const initializeCarousel = (cuisines) => {
 };
 
 // 5. LOGIKA DANYCH I API
+const delay = ms => new Promise(res => setTimeout(res, ms));
+
+const fetchWithRetry = async (url, options, retries = MAX_RETRIES) => {
+    for (let i = 0; i <= retries; i++) {
+        try {
+            const response = await fetch(url, options);
+            if (!response.ok) {
+                 throw new Error(`Błąd HTTP: ${response.status}`);
+            }
+            return response;
+        } catch (error) {
+            console.error(`Próba ${i + 1} nieudana:`, error.message);
+            if (i === retries) {
+                console.error("Osiągnięto maksymalną liczbę prób. Poddaję się.");
+                throw error;
+            }
+            await delay(1000 * (i + 1)); // Czekaj 1, 2, 3... sekundy
+        }
+    }
+};
+
 const loadData = async () => {
     try {
-        const response = await fetch(`${JSONBIN_URL}/latest`, { headers: { 'X-Master-Key': JSONBIN_API_KEY } });
-        if (!response.ok) throw new Error('Błąd sieciowy');
+        const response = await fetchWithRetry(`${JSONBIN_URL}/latest`, { headers: { 'X-Master-Key': JSONBIN_API_KEY } });
         const data = await response.json();
         appData = data.record;
         renderHistoryTable();
         populatePersonSelect();
     } catch (error) {
-        console.error("Błąd ładowania:", error);
-        historyBody.innerHTML = '<tr><td colspan="4">Nie udało się załadować danych. Sprawdź konfigurację.</td></tr>';
+        console.error("Błąd ładowania danych po wielu próbach:", error);
+        historyBody.innerHTML = '<tr><td colspan="4">Nie udało się załadować danych. Odśwież stronę i spróbuj ponownie.</td></tr>';
     }
 };
 
 const saveData = async () => {
     try {
-        await fetch(JSONBIN_URL, {
+        await fetchWithRetry(JSONBIN_URL, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json', 'X-Master-Key': JSONBIN_API_KEY },
             body: JSON.stringify(appData)
         });
-        await loadData(); // Odśwież dane po zapisie
+        await loadData();
     } catch (error) {
-        console.error("Błąd zapisu:", error);
-        resultAnnouncement.innerHTML = `<h2 style="color:red">Błąd zapisu!</h2>`;
+        console.error("Błąd zapisu danych po wielu próbach:", error);
+        resultAnnouncement.innerHTML = `<h2 style="color:red">Błąd zapisu! Spróbuj ponownie.</h2>`;
     }
 };
+
 
 const populatePersonSelect = () => {
     personSelect.innerHTML = '';
@@ -412,7 +449,6 @@ const populatePersonSelect = () => {
     }
 };
 
-// ZUPEŁNIE NOWA FUNKCJA LOSUJĄCA
 const startCarousel = () => {
     if (isSpinning) return;
     const availableCuisines = appData.availableCuisines;
@@ -427,34 +463,28 @@ const startCarousel = () => {
     const randomIndex = Math.floor(Math.random() * availableCuisines.length);
     const selectedCuisine = availableCuisines[randomIndex];
 
-    // Znajdź pozycję wylosowanej kuchni w drugiej powtórzonej sekcji
     const targetIndex = availableCuisines.length + randomIndex;
-    
-    // Każdy element ma 100px szerokości + 20px marginesu
     const itemWidth = 120;
-    // Przesuń w lewo o pozycję elementu, odejmując połowę szerokości kontenera i połowę szerokości elementu, by wyśrodkować
     const targetPosition = - (targetIndex * itemWidth) + (carouselTrack.parentElement.clientWidth / 2) - (itemWidth / 2);
 
-    // Dodaj klasę, aby uruchomić animację w CSS
     carouselTrack.classList.add('spinning');
     carouselTrack.style.left = `${targetPosition}px`;
 
     setTimeout(async () => {
         const cuisineString = selectedCuisine.name + " " + selectedCuisine.icon;
         resultAnnouncement.innerHTML = `<h2>Gratulacje, <span style="color:var(--primary-color)">${currentUser.name}!</span></h2>
-                                     <p>Twoje przeznaczenie to: <strong>${cuisineString}</strong></p>`;
+                                      <p>Twoje przeznaczenie to: <strong>${cuisineString}</strong></p>`;
         
         const personIndex = appData.participants.findIndex(p => p.base === currentUser.name);
         if (personIndex > -1) {
             appData.participants[personIndex].cuisine = cuisineString;
-            // Usuń wylosowaną kuchnię z oryginalnej tablicy
             appData.availableCuisines.splice(randomIndex, 1);
         }
         
         await saveData();
         isSpinning = false;
         contentWrapper.classList.add('hidden');
-    }, 5100); // Czas musi być nieco dłuższy niż animacja w CSS
+    }, 5100);
 };
 
 
@@ -520,10 +550,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     lightbox.addEventListener('click', (e) => {
-        // Zamknij tylko jeśli kliknięto tło lub przycisk 'x'
         if (e.target !== e.currentTarget && e.target.tagName !== 'SPAN') return;
         lightbox.classList.remove('active');
-        // Ukryj po zakończeniu animacji zanikania
         setTimeout(() => {
             lightbox.classList.add('hidden');
         }, 300);
