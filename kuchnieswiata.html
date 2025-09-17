@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Domówka: Kuchnie Świata!</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #1a1a2e;
+            --card-color: #16213e;
+            --primary-color: #e94560;
+            --text-color: #e0e0e0;
+            --text-muted: #a7a7a7;
+            --border-color: #0f3460;
+            --border-radius: 16px;
+            --font-main: 'Poppins', sans-serif;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: var(--font-main); background-color: var(--bg-color); color: var(--text-color); display: flex; flex-direction: column; align-items: center; min-height: 100vh; padding: 2rem 1rem; }
+        .container { background-color: var(--card-color); border: 1px solid var(--border-color); padding: 2rem 2.5rem; border-radius: var(--border-radius); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); width: 100%; max-width: 900px; text-align: center; transition: all 0.3s ease; margin-bottom: 2rem; }
+        h1, h2, h3 { font-weight: 700; margin-bottom: 1rem; }
+        h1 { color: var(--primary-color); font-size: 2.5rem; }
+        h2 { font-size: 1.8rem; }
+        h3 { font-size: 1.2rem; color: var(--text-muted); }
+        p { color: var(--text-muted); line-height: 1.6; margin-bottom: 1.5rem; }
+        .lore-section { text-align: left; margin: 2rem 0; padding: 1.5rem; background-color: rgba(15, 52, 96, 0.3); border-radius: var(--border-radius); border-left: 4px solid var(--primary-color); }
+        .lore-section p { margin-bottom: 0.5rem; }
+        .button-group { display: flex; gap: 1rem; justify-content: center; margin-top: 2rem; }
+        button, .button { background: var(--primary-color); color: white; border: none; padding: 0.8rem 1.8rem; border-radius: 50px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; text-decoration: none; display: inline-block; }
+        button:hover, .button:hover { transform: translateY(-3px); box-shadow: 0 4px 15px rgba(233, 69, 96, 0.4); }
+        button:disabled { background-color: #555; cursor: not-allowed; transform: none; box-shadow: none; }
+        button.secondary { background: var(--border-color); }
+        .form-group { margin: 1.5rem 0; text-align: left; }
+        label { display: block; margin-bottom: 0.5rem; font-weight: 600; font-size: 0.9rem; color: var(--text-muted); }
+        select, .radio-group { width: 100%; background: var(--bg-color); border: 1px solid var(--border-color); color: var(--text-color); padding: 0.8rem 1rem; border-radius: 8px; font-size: 1rem; font-family: var(--font-main); }
+        .radio-group { display: flex; justify-content: space-around; }
+        
+        /* --- NOWE STYLE ANIMACJI --- */
+        #carousel-container {
+            height: 120px;
+            width: 100%;
+            margin: 2rem auto;
+            border: 2px solid var(--border-color);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        #carousel-track {
+            display: flex;
+            position: relative;
+            left: 50%;
+        }
+        .carousel-item {
+            flex-shrink: 0;
+            width: 100px;
+            height: 100px;
+            margin: 0 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: var(--border-color);
+            border-radius: 10px;
+            transition: transform 0.3s ease;
+        }
+        .carousel-item .icon { font-size: 2.5rem; }
+        .carousel-item .name { font-size: 0.8rem; font-weight: 600; margin-top: 5px; }
+
+        #carousel-pointer {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 100%;
+            background-color: var(--primary-color);
+            z-index: 10;
+            box-shadow: 0 0 10px var(--primary-color);
+        }
+
+        /* Klasa dodawana do uruchomienia animacji */
+        .spinning {
+            transition: left 5s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        #results-table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+        #results-table th, #results-table td { padding: 0.8rem 1rem; text-align: left; }
+        #results-table thead { background-color: var(--border-color); }
+        #results-table tbody tr { border-bottom: 1px solid var(--border-color); }
+        #results-table tbody tr:nth-child(even) { background-color: rgba(15, 52, 96, 0.3); }
+        .hidden { display: none !important; }
+		
+		 /* --- NOWE STYLE SEKCJI SZCZEGÓŁÓW --- */
+        .details-section {
+            text-align: left;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-color);
+        }
+        .details-section h2 {
+            text-align: center;
+            color: var(--primary-color);
+        }
+        .details-box {
+            background-color: rgba(15, 52, 96, 0.3);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            margin-top: 2rem;
+        }
+        .details-box h3 {
+            color: var(--text-color);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .transport-table {
+            width: 100%;
+            font-size: 0.9rem;
+        }
+		.transport-table td {
+			padding: 0.5rem;
+			border-bottom: 1px solid var(--border-color);
+			white-space: nowrap; /* Ta linia zapobiega zawijaniu tekstu */
+		}
+
+        .transport-table td:first-child {
+            width: 140px; /* Zwiększona szerokość dla nazw przystanków */
+        }
+        .map-gallery {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            justify-content: center;
+        }
+        .map-gallery img {
+            width: 31%;
+            border-radius: 8px;
+            border: 2px solid var(--border-color);
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .map-gallery img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(233, 69, 96, 0.5);
+        }
+        
+        /* --- STYLE MODALA (POWIĘKSZONEGO ZDJĘCIA) --- */
+        #lightbox {
+            position: fixed;
+            z-index: 1000;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        #lightbox.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        #lightbox img {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: var(--border-radius);
+        }
+        #lightbox .close {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            font-size: 3rem;
+            color: white;
+            cursor: pointer;
+        }
+		 .transport-icon {
+            display: inline-block;
+            width: 30px;
+            text-align: center;
+        }
+		
+    </style>
+</head>
+<body>
+<div id="lightbox" class="hidden">
+        <span class="close">&times;</span>
+        <img id="lightbox-img" src="">
+    </div>
+
+    <div class="container">
+        <div id="content-wrapper">
+             <div id="step-invite">
+                <h1>Domówka: Kuchnie Świata! 🗺️</h1>
+                <h3>Zaproszenie na epicką podróż kulinarną</h3>
+                <p>Zanim przejdziemy dalej, odpowiedz na jedno, arcyważne pytanie...</p>
+                <h2>Czy <u>4 października</u> masz ochotę uczestniczyć w tej imprezie?</h2>
+                <div class="lore-section">
+                    <p>🌶️ <strong>Idea jest prosta:</strong> Każdy uczestnik (lub para) losuje kuchnię i przygotowuje jedno, charakterystyczne dla niej danie.</p>
+                    <p>🎲 <strong>Na miejscu czekają:</strong> Zacne trunki, gry bez prądu, integracja i ploteczki do oporu.</p>
+                    <p>🤝 <strong>Cel:</strong> Spróbować pysznego jedzenia i świetnie się bawić w doborowym towarzystwie!</p>
+                </div>
+                <div class="button-group">
+                    <button id="btn-attend-yes">🎉 Tak, będę!</button>
+                    <button id="btn-attend-no" class="secondary">😢 Niestety, nie tym razem</button>
+                </div>
+            </div>
+
+            <div id="step-details" class="hidden">
+                <h2>Super, że będziesz!</h2>
+                <p>Uzupełnij jeszcze dwie rzeczy, abyśmy mogli wszystko przygotować.</p>
+                <div class="form-group">
+                    <label>Jestem...</label>
+                    <select id="person-select"></select>
+                </div>
+                <div class="form-group">
+                    <label>Czy będziesz z osobą towarzyszącą?</label>
+                    <div class="radio-group" id="guest-choice">
+                        <label><input type="radio" name="guest" value="yes" checked> Tak</label>
+                        <label><input type="radio" name="guest" value="no"> Nie</label>
+                    </div>
+                </div>
+                <button id="btn-to-drawing">Przejdź do losowania</button>
+            </div>
+
+            <div id="step-drawing" class="hidden">
+                <h2>Czas na losowanie!</h2>
+                <p>Kliknij przycisk i poznaj swoje kulinarne przeznaczenie.</p>
+                <div id="carousel-container">
+                    <div id="carousel-pointer"></div>
+                    <div id="carousel-track"></div>
+                </div>
+                <button id="spin-button">Rozpocznij losowanie!</button>
+            </div>
+        </div>
+       
+        <div id="results-section">
+            <h2 id="result-announcement"></h2>
+            <h3>Aktualna lista gości i kuchni</h3>
+            <table id="results-table">
+                <thead>
+                    <tr>
+                        <th>Imię</th>
+                        <th>Obecność</th>
+                        <th>+1</th>
+                        <th>Wylosowana Kuchnia</th>
+                    </tr>
+                </thead>
+                <tbody id="history-body">
+                    <tr><td colspan="4">Ładowanie danych...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+	<div class="container details-section">
+        <h2>Szczegóły Imprezy</h2>
+        
+        <div class="details-box">
+            <h3>🗓️ Czas, Miejsce i Zasady</h3>
+            <p><strong>Kiedy:</strong> Sobota, 4 października 2025, start o <strong>18:00</strong>.<br>
+               <strong>Gdzie:</strong> ul. Awicenny 32a/12, Wrocław.</p>
+            <p style="margin-bottom: 0;">Każda osoba/para przygotowuje <strong>tylko jedno danie</strong> z wylosowanej kuchni. Na miejscu dostępne będą wino, whisky, wódka, napoje i przekąski. Prosimy nie przynosić za dużo jedzenia!</p>
+        </div>
+
+        <div class="details-box">
+            <h3>🚗 Transport i Dojazd</h3>
+            <table class="transport-table">
+                <tbody>
+                    <tr><td><span class="transport-icon">✈️</span> Lotnisko</td><td>ok. 20 min samochodem</td></tr>
+                    <tr><td><span class="transport-icon">🚆</span> Dworzec Zach.</td><td>ok. 5 min pieszo 🚶</td></tr>
+                    <tr><td><span class="transport-icon">🅿️</span> Parking Biedronka</td><td>2 min pieszo 🚶</td></tr>
+                    <tr><td><span class="transport-icon">🚌</span> <strong>Chachaja</strong></td><td>132 (pod domem)</td></tr>
+                    <tr><td><span class="transport-icon">🚌</span> <strong>Jordanowska</strong></td><td>132, 125, 907, 947 (4 min pieszo 🚶)</td></tr>
+                    <tr><td><span class="transport-icon">🚌</span> <strong>Wiejska</strong></td><td>107, 119, 125, (...) (7 min pieszo 🚶)</td></tr>
+                    <tr><td><span class="transport-icon">🚊</span> <strong>Pętla Oporów</strong></td><td>4, 11, 20 oraz autobusy (8 min pieszo 🚶)</td></tr>
+                    <tr><td><span class="transport-icon">🚢</span> Statek</td><td>Ruch morski niedostępny</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+         <div class="details-box">
+            <h3>🗺️ Mapy Dojazdu (kliknij, aby powiększyć)</h3>
+            <div class="map-gallery">
+                <img src="1.png" alt="Mapa okolicy">
+                <img src="2.png" alt="Mapa transportu">
+                <img src="3.png" alt="Mapa parkingu">
+            </div>
+        </div>
+    </div>
+	
+
+<script>
+// 1. KONFIGURACJA
+const JSONBIN_API_KEY = '$2a$10$uss5q/ZpmJgrr7GzC4iEbeG3Px6iazRf/KFqHsIUnm/85HaEFl5Fm';
+const JSONBIN_BIN_ID = '68ca4e62d0ea881f4080a276';
+const JSONBIN_URL = `https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`;
+
+// 2. REFERENCJE DO ELEMENTÓW DOM
+const steps = {
+    invite: document.getElementById('step-invite'),
+    details: document.getElementById('step-details'),
+    drawing: document.getElementById('step-drawing'),
+};
+const contentWrapper = document.getElementById('content-wrapper');
+const resultsSection = document.getElementById('results-section');
+const personSelect = document.getElementById('person-select');
+const historyBody = document.getElementById('history-body');
+const spinButton = document.getElementById('spin-button');
+const resultAnnouncement = document.getElementById('result-announcement');
+const carouselTrack = document.getElementById('carousel-track');
+
+// 3. STAN APLIKACJI
+let appData = {
+    participants: [],
+    availableCuisines: []
+};
+let currentUser = { name: null };
+let isSpinning = false;
+
+// 4. FUNKCJE NAWIGACYJNE I WIDOKU
+const goToStep = (stepName) => {
+    Object.values(steps).forEach(step => step.classList.add('hidden'));
+    if (steps[stepName]) {
+        steps[stepName].classList.remove('hidden');
+    }
+};
+
+const renderHistoryTable = () => {
+    historyBody.innerHTML = '';
+    if (!appData.participants || appData.participants.length === 0) {
+        historyBody.innerHTML = '<tr><td colspan="4">Brak danych o uczestnikach.</td></tr>';
+        return;
+    }
+    appData.participants.forEach(p => {
+        const row = document.createElement('tr');
+        const attendingText = p.attending === null ? '❔' : (p.attending ? '✅ Tak' : '❌ Nie');
+        const guestText = p.attending ? (p.guest ? '👤 Tak' : '➖ Nie') : '➖';
+        const cuisineText = p.attending ? (p.cuisine || '<em>Czeka na losowanie</em>') : '➖';
+        row.innerHTML = `<td>${p.base}</td><td>${attendingText}</td><td>${guestText}</td><td>${cuisineText}</td>`;
+        historyBody.appendChild(row);
+    });
+};
+
+// ZUPEŁNIE NOWA FUNKCJA INICJALIZUJĄCA
+const initializeCarousel = (cuisines) => {
+    carouselTrack.innerHTML = '';
+    // Tworzymy dłuższą listę, aby animacja była płynna
+    const extendedCuisines = [...cuisines, ...cuisines, ...cuisines, ...cuisines, ...cuisines];
+    
+    extendedCuisines.forEach(cuisine => {
+        const item = document.createElement('div');
+        item.className = 'carousel-item';
+        item.innerHTML = `<span class="icon">${cuisine.icon}</span><span class="name">${cuisine.name}</span>`;
+        carouselTrack.appendChild(item);
+    });
+};
+
+// 5. LOGIKA DANYCH I API
+const loadData = async () => {
+    try {
+        const response = await fetch(`${JSONBIN_URL}/latest`, { headers: { 'X-Master-Key': JSONBIN_API_KEY } });
+        if (!response.ok) throw new Error('Błąd sieciowy');
+        const data = await response.json();
+        appData = data.record;
+        renderHistoryTable();
+        populatePersonSelect();
+    } catch (error) {
+        console.error("Błąd ładowania:", error);
+        historyBody.innerHTML = '<tr><td colspan="4">Nie udało się załadować danych. Sprawdź konfigurację.</td></tr>';
+    }
+};
+
+const saveData = async () => {
+    try {
+        await fetch(JSONBIN_URL, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json', 'X-Master-Key': JSONBIN_API_KEY },
+            body: JSON.stringify(appData)
+        });
+        await loadData(); // Odśwież dane po zapisie
+    } catch (error) {
+        console.error("Błąd zapisu:", error);
+        resultAnnouncement.innerHTML = `<h2 style="color:red">Błąd zapisu!</h2>`;
+    }
+};
+
+const populatePersonSelect = () => {
+    personSelect.innerHTML = '';
+    let availablePeople = 0;
+    if (appData.participants) {
+        appData.participants.forEach(p => {
+            if (p.attending === null || (p.attending && !p.cuisine)) {
+                const option = document.createElement('option');
+                option.value = p.base;
+                option.textContent = p.declined;
+                personSelect.appendChild(option);
+                availablePeople++;
+            }
+        });
+    }
+    if (availablePeople === 0) {
+        document.getElementById('step-details').innerHTML = '<p>Wygląda na to, że wszyscy już wzięli udział. Zobacz wyniki poniżej!</p>';
+    }
+};
+
+// ZUPEŁNIE NOWA FUNKCJA LOSUJĄCA
+const startCarousel = () => {
+    if (isSpinning) return;
+    const availableCuisines = appData.availableCuisines;
+    if (!availableCuisines || availableCuisines.length === 0) {
+        alert("Wszystkie kuchnie zostały już wylosowane!");
+        return;
+    }
+
+    isSpinning = true;
+    spinButton.disabled = true;
+
+    const randomIndex = Math.floor(Math.random() * availableCuisines.length);
+    const selectedCuisine = availableCuisines[randomIndex];
+
+    // Znajdź pozycję wylosowanej kuchni w drugiej powtórzonej sekcji
+    const targetIndex = availableCuisines.length + randomIndex;
+    
+    // Każdy element ma 100px szerokości + 20px marginesu
+    const itemWidth = 120;
+    // Przesuń w lewo o pozycję elementu, odejmując połowę szerokości kontenera i połowę szerokości elementu, by wyśrodkować
+    const targetPosition = - (targetIndex * itemWidth) + (carouselTrack.parentElement.clientWidth / 2) - (itemWidth / 2);
+
+    // Dodaj klasę, aby uruchomić animację w CSS
+    carouselTrack.classList.add('spinning');
+    carouselTrack.style.left = `${targetPosition}px`;
+
+    setTimeout(async () => {
+        const cuisineString = selectedCuisine.name + " " + selectedCuisine.icon;
+        resultAnnouncement.innerHTML = `<h2>Gratulacje, <span style="color:var(--primary-color)">${currentUser.name}!</span></h2>
+                                     <p>Twoje przeznaczenie to: <strong>${cuisineString}</strong></p>`;
+        
+        const personIndex = appData.participants.findIndex(p => p.base === currentUser.name);
+        if (personIndex > -1) {
+            appData.participants[personIndex].cuisine = cuisineString;
+            // Usuń wylosowaną kuchnię z oryginalnej tablicy
+            appData.availableCuisines.splice(randomIndex, 1);
+        }
+        
+        await saveData();
+        isSpinning = false;
+        contentWrapper.classList.add('hidden');
+    }, 5100); // Czas musi być nieco dłuższy niż animacja w CSS
+};
+
+
+// 7. INICJALIZACJA I OBSŁUGA ZDARZEŃ
+document.addEventListener('DOMContentLoaded', () => {
+    
+    document.getElementById('btn-attend-yes').addEventListener('click', () => {
+        goToStep('details');
+    });
+
+    document.getElementById('btn-attend-no').addEventListener('click', async () => {
+        const name = prompt("Aby zapisać Twoją decyzję, podaj proszę swoje imię (np. Iwona):");
+        if (name) {
+            const personIndex = appData.participants.findIndex(p => p.base.toLowerCase() === name.toLowerCase());
+            if (personIndex > -1) {
+                appData.participants[personIndex].attending = false;
+                await saveData();
+                contentWrapper.classList.add('hidden');
+                resultAnnouncement.innerHTML = `<h2>Dzięki za informację!</h2><p>Do zobaczenia następnym razem.</p>`;
+            } else {
+                alert("Nie znaleziono takiego imienia na liście.");
+            }
+        }
+    });
+    
+    document.getElementById('btn-to-drawing').addEventListener('click', () => {
+        currentUser.name = personSelect.value;
+        const personData = appData.participants.find(p => p.base === currentUser.name);
+
+        if (personData && personData.cuisine) {
+            alert('Już brałeś/aś udział w losowaniu! Zobacz swój wynik w tabeli.');
+            contentWrapper.classList.add('hidden');
+            resultAnnouncement.innerHTML = `<h2>Twój wynik jest już w tabeli, ${personData.base}!</h2>`;
+            return;
+        }
+
+        const personIndex = appData.participants.findIndex(p => p.base === currentUser.name);
+        if (personIndex > -1) {
+            appData.participants[personIndex].attending = true;
+            appData.participants[personIndex].guest = document.querySelector('input[name="guest"]:checked').value === 'yes';
+        }
+        
+        initializeCarousel(appData.availableCuisines);
+        goToStep('drawing');
+    });
+
+    spinButton.addEventListener('click', startCarousel);
+    
+    loadData();
+    goToStep('invite');
+});
+// --- DODATKOWA LOGIKA DLA GALERII MAP ---
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+    const galleryImages = document.querySelectorAll('.map-gallery img');
+
+    galleryImages.forEach(img => {
+        img.addEventListener('click', () => {
+            lightbox.classList.remove('hidden');
+            lightbox.classList.add('active');
+            lightboxImg.src = img.src;
+        });
+    });
+
+    lightbox.addEventListener('click', (e) => {
+        // Zamknij tylko jeśli kliknięto tło lub przycisk 'x'
+        if (e.target !== e.currentTarget && e.target.tagName !== 'SPAN') return;
+        lightbox.classList.remove('active');
+        // Ukryj po zakończeniu animacji zanikania
+        setTimeout(() => {
+            lightbox.classList.add('hidden');
+        }, 300);
+    });
+</script>
+
+</body>
+</html>
