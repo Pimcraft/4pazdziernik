@@ -241,6 +241,19 @@
                 </div>
                 <button id="spin-button">Rozpocznij losowanie!</button>
             </div>
+			<div id="step-refuse" class="hidden">
+				<h2>Czy na pewno? 🤔</h2>
+				<p>Wybierz swoje imię z listy, aby potwierdzić, że jednak Cię nie będzie.</p>
+				<div class="form-group">
+					<label>Jestem...</label>
+					<select id="refuse-person-select"></select>
+				</div>
+				<div class="button-group">
+					<button id="btn-confirm-refusal" class="secondary">Potwierdzam rezygnację</button>
+					<button id="btn-cancel-refusal">Jednak będę!</button>
+				</div>
+			</div>
+
         </div>
         
         <div id="results-section">
@@ -323,10 +336,19 @@ const JSONBIN_URL = `https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`;
 const MAX_RETRIES = 5;
 
 // 2. REFERENCJE DO ELEMENTÓW DOM
+const naggingQuestions = [
+    "Ale na pewno? Będzie pyszne jedzonko...",
+    "A co z doborowym towarzystwem? Tego też nie chcesz?",
+    "Poważnie? Nawet koty będą tęsknić...",
+    "Ostatnia szansa... Może jednak się skusisz?",
+    "To ostateczna decyzja? Bez Ciebie to nie będzie to samo!"
+];
+
 const steps = {
     invite: document.getElementById('step-invite'),
     details: document.getElementById('step-details'),
     drawing: document.getElementById('step-drawing'),
+    refuse: document.getElementById('step-refuse'), // Ta linia jest nowa
 };
 const contentWrapper = document.getElementById('content-wrapper');
 const resultsSection = document.getElementById('results-section');
@@ -409,6 +431,7 @@ const loadData = async () => {
         appData = data.record;
         renderHistoryTable();
         populatePersonSelect();
+		populateRefuseSelect();
     } catch (error) {
         console.error("Błąd ładowania danych po wielu próbach:", error);
         historyBody.innerHTML = '<tr><td colspan="4">Nie udało się załadować danych. Odśwież stronę i spróbuj ponownie.</td></tr>';
@@ -486,7 +509,73 @@ const startCarousel = () => {
         contentWrapper.classList.add('hidden');
     }, 5100);
 };
+// DODAJ całą tę nową funkcję
+const populateRefuseSelect = () => {
+    const refuseSelect = document.getElementById('refuse-person-select');
+    refuseSelect.innerHTML = '';
+    let availablePeople = 0;
+    if (appData.participants) {
+        appData.participants.forEach(p => {
+            // Pokaż osoby niezdecydowane (null) lub te, które już potwierdziły (true)
+            if (p.attending === null || p.attending === true) {
+                const option = document.createElement('option');
+                option.value = p.base;
+                option.textContent = p.declined;
+                refuseSelect.appendChild(option);
+                availablePeople++;
+            }
+        });
+    }
+    if (availablePeople === 0) {
+        document.getElementById('step-refuse').innerHTML = '<p>Wygląda na to, że wszyscy już podjęli ostateczną decyzję!</p>';
+    }
+};
 
+// DODAJ całą tę nową funkcję
+const handleRefusal = async () => {
+    const refuseSelect = document.getElementById('refuse-person-select');
+    const name = refuseSelect.value;
+    if (!name) return;
+
+    // Pętla z męczącymi pytaniami
+    for (const question of naggingQuestions) {
+        if (!confirm(question)) {
+            alert("Uff, co za ulga! Dobrze, że zostajesz! 😄");
+            goToStep('invite');
+            return; // Przerwij proces odmowy
+        }
+    }
+
+    const personIndex = appData.participants.findIndex(p => p.base === name);
+    if (personIndex > -1) {
+        const person = appData.participants[personIndex];
+
+        // Sprawdź, czy osoba miała przypisaną kuchnię
+        if (person.cuisine) {
+            const cuisineString = person.cuisine;
+            // Proste parsowanie: "Nazwa Kuchni  эмодзи"
+            const parts = cuisineString.split(' ');
+            const icon = parts.pop();
+            const cuisineName = parts.join(' ');
+            
+            // Stwórz obiekt kuchni i dodaj go z powrotem do puli
+            const returnedCuisine = { name: cuisineName, icon: icon };
+            appData.availableCuisines.push(returnedCuisine);
+            
+            // Opcjonalnie: sortuj listę kuchni dla porządku
+            appData.availableCuisines.sort((a, b) => a.name.localeCompare(b.name));
+        }
+
+        // Zaktualizuj dane osoby
+        person.attending = false;
+        person.guest = false; // Resetuj osobę towarzyszącą
+        person.cuisine = null; // Usuń kuchnię
+
+        await saveData();
+        contentWrapper.classList.add('hidden');
+        resultAnnouncement.innerHTML = `<h2>Szkoda, że Cię nie będzie, ${name}.</h2><p>Dzięki za informację! Do zobaczenia następnym razem.</p>`;
+    }
+};
 
 // 7. INICJALIZACJA I OBSŁUGA ZDARZEŃ
 document.addEventListener('DOMContentLoaded', () => {
@@ -495,20 +584,12 @@ document.addEventListener('DOMContentLoaded', () => {
         goToStep('details');
     });
 
-    document.getElementById('btn-attend-no').addEventListener('click', async () => {
-        const name = prompt("Aby zapisać Twoją decyzję, podaj proszę swoje imię (np. Iwona):");
-        if (name) {
-            const personIndex = appData.participants.findIndex(p => p.base.toLowerCase() === name.toLowerCase());
-            if (personIndex > -1) {
-                appData.participants[personIndex].attending = false;
-                await saveData();
-                contentWrapper.classList.add('hidden');
-                resultAnnouncement.innerHTML = `<h2>Dzięki za informację!</h2><p>Do zobaczenia następnym razem.</p>`;
-            } else {
-                alert("Nie znaleziono takiego imienia na liście.");
-            }
-        }
-    });
+    document.getElementById('btn-attend-no').addEventListener('click', () => {
+		goToStep('refuse');
+	});
+	
+	document.getElementById('btn-confirm-refusal').addEventListener('click', handleRefusal);
+	document.getElementById('btn-cancel-refusal').addEventListener('click', () => goToStep('invite'));
     
     document.getElementById('btn-to-drawing').addEventListener('click', () => {
         currentUser.name = personSelect.value;
@@ -560,4 +641,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
 </body>
 </html>
+
 
