@@ -205,7 +205,47 @@
         }
 
         #results-table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
-        
+        /* --- NOWE STYLE GALERII KUCHNI --- */
+		.cuisine-gallery {
+		    display: flex;           /* Ustawia elementy w rzędzie */
+		    flex-wrap: wrap;         /* Pozwala elementom zawijać się do nowego wiersza */
+		    justify-content: center; /* Wyśrodkowuje kafelki w poziomie */
+		    gap: 8px;                /* Tworzy mały odstęp między kafelkami */
+		    margin-top: 1.5rem;      /* Odstęp od nagłówka "Pula Dostępnych Kuchni" */
+		}
+		
+		/* Zmniejszamy rozmiar kafelków wewnątrz galerii */
+		.cuisine-gallery .carousel-item {
+		    width: 85px;  /* Nowa, mniejsza szerokość */
+		    height: 85px; /* Nowa, mniejsza wysokość */
+		    margin: 0;    /* Usuwamy stary margines na rzecz właściwości 'gap' */
+		}
+		
+		/* Zmniejszamy ikonę, aby pasowała do mniejszego kafelka */
+		.cuisine-gallery .carousel-item .icon {
+		    font-size: 2rem;
+		}
+		
+		/* Zmniejszamy tekst pod ikoną */
+		.cuisine-gallery .carousel-item .name {
+		    font-size: 0.7rem;
+		    font-weight: 500;
+		}
+		
+		/* Style dla zajętych, przekreślonych kuchni */
+		.cuisine-gallery .carousel-item.unavailable {
+		    opacity: 0.4;
+		    filter: grayscale(1);
+		    text-decoration: line-through;
+		    cursor: not-allowed;
+		    transform: none; /* Wyłącza efekt "podnoszenia się" przy najechaniu myszką */
+		}
+		
+		/* Dodatkowa reguła, aby na pewno nie było efektu hover na zajętych */
+		.cuisine-gallery .carousel-item.unavailable:hover {
+		    transform: none;
+		    box-shadow: none;
+		}
     </style>
 </head>
 <body>
@@ -727,6 +767,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 </body>
 </html>
+
 
 
 
