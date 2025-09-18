@@ -188,6 +188,23 @@
             width: 30px;
             text-align: center;
         }
+		/* --- NOWE STYLE PODSUMOWANIA --- */
+        #summary-stats {
+            display: flex;
+            justify-content: space-around;
+            background-color: rgba(15, 52, 96, 0.4);
+            padding: 1rem;
+            border-radius: 12px;
+            margin: 1.5rem 0;
+            font-weight: 600;
+        }
+        #summary-stats strong {
+            color: var(--primary-color);
+            font-size: 1.2rem;
+            margin-left: 0.5rem;
+        }
+
+        #results-table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
         
     </style>
 </head>
@@ -257,8 +274,14 @@
         </div>
         
         <div id="results-section">
-            <h2 id="result-announcement"></h2>
-            <h3>Aktualna lista gości i kuchni</h3>
+            <h2 id="result-announcement"></h2>
+            
+            <div id="summary-stats">
+                <span>✅ Potwierdzeni: <strong id="stats-attending">0</strong></span>
+                <span>❌ Odmowy: <strong id="stats-declined">0</strong></span>
+                <span>❔ Czekamy: <strong id="stats-pending">0</strong></span>
+            </div>
+                        <h3>Aktualna lista gości i kuchni</h3>
             <table id="results-table">
                 <thead>
                     <tr>
@@ -373,8 +396,35 @@ const goToStep = (stepName) => {
         steps[stepName].classList.remove('hidden');
     }
 };
+	// POCZĄTEK NOWEJ FUNKCJI
+const updateSummaryStats = () => {
+    if (!appData.participants) return;
+
+    let attendingCount = 0;
+    let declinedCount = 0;
+    let pendingCount = 0;
+
+    appData.participants.forEach(p => {
+        if (p.attending === true) {
+            attendingCount++; // Osoba z listy
+            if (p.guest) {
+                attendingCount++; // Jej osoba towarzysząca
+            }
+        } else if (p.attending === false) {
+            declinedCount++;
+        } else { // p.attending jest null
+            pendingCount++;
+        }
+    });
+
+    document.getElementById('stats-attending').textContent = attendingCount;
+    document.getElementById('stats-declined').textContent = declinedCount;
+    document.getElementById('stats-pending').textContent = pendingCount;
+};
+// KONIEC NOWEJ FUNKCJI
 
 const renderHistoryTable = () => {
+	updateSummaryStats();
     historyBody.innerHTML = '';
     if (!appData.participants || appData.participants.length === 0) {
         historyBody.innerHTML = '<tr><td colspan="4">Brak danych o uczestnikach.</td></tr>';
@@ -401,6 +451,7 @@ const initializeCarousel = (cuisines) => {
         carouselTrack.appendChild(item);
     });
 };
+	
 
 // 5. LOGIKA DANYCH I API
 const delay = ms => new Promise(res => setTimeout(res, ms));
@@ -641,5 +692,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 </body>
 </html>
+
 
 
