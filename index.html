@@ -459,7 +459,7 @@ const renderInviteCuisineGallery = () => {
 
 const renderHistoryTable = () => {
 	updateSummaryStats();
-	renderCuisineGallery();
+	renderInviteCuisineGallery();
     historyBody.innerHTML = '';
     if (!appData.participants || appData.participants.length === 0) {
         historyBody.innerHTML = '<tr><td colspan="4">Brak danych o uczestnikach.</td></tr>';
@@ -727,6 +727,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 </body>
 </html>
+
 
 
 
