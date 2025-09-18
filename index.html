@@ -224,9 +224,15 @@
                 <div class="lore-section">
                     <p>🌶️ <strong>Idea jest prosta:</strong> Każdy uczestnik (lub para) losuje kuchnię i przygotowuje jedno, charakterystyczne dla niej danie.</p>
                     <p>🎲 <strong>Na miejscu czekają:</strong> Zacne trunki, gry bez prądu, integracja i ploteczki do oporu.</p>
-                    <p>🤝 <strong>Cel:</strong> Spróbować pysznego jedzenia i świetnie się bawić w doborowym towarzystwie!</p>
+                     <p>🤝 <strong>Cel:</strong> Spróbować pysznego jedzenia i świetnie się bawić w doborowym towarzystwie!</p>
                 </div>
-                <div class="button-group">
+
+                <div class="details-box" style="margin-top: 2rem; text-align: left;">
+                    <h3 style="text-align: center;">🍲 Pula Dostępnych Kuchni</h3>
+                    <div class="cuisine-gallery" id="cuisine-gallery-invite">
+                        </div>
+                </div>
+                                <div class="button-group">
                     <button id="btn-attend-yes">🎉 Tak, będę!</button>
                     <button id="btn-attend-no" class="secondary">😢 Niestety, nie tym razem</button>
                 </div>
@@ -421,10 +427,39 @@ const updateSummaryStats = () => {
     document.getElementById('stats-declined').textContent = declinedCount;
     document.getElementById('stats-pending').textContent = pendingCount;
 };
-// KONIEC NOWEJ FUNKCJI
+const renderInviteCuisineGallery = () => {
+    const gallery = document.getElementById('cuisine-gallery-invite');
+    if (!gallery || !appData.participants || !appData.availableCuisines) return;
+
+    gallery.innerHTML = '';
+
+    const drawnCuisines = appData.participants
+        .filter(p => p.cuisine)
+        .map(p => {
+            const parts = p.cuisine.split(' ');
+            const icon = parts.pop();
+            const name = parts.join(' ');
+            return { name, icon };
+        });
+
+    const allCuisines = [...appData.availableCuisines, ...drawnCuisines];
+    allCuisines.sort((a, b) => a.name.localeCompare(b.name));
+    const availableNames = new Set(appData.availableCuisines.map(c => c.name));
+
+    allCuisines.forEach(cuisine => {
+        const item = document.createElement('div');
+        item.className = 'carousel-item';
+        if (!availableNames.has(cuisine.name)) {
+            item.classList.add('unavailable');
+        }
+        item.innerHTML = `<span class="icon">${cuisine.icon}</span><span class="name">${cuisine.name}</span>`;
+        gallery.appendChild(item);
+    });
+};
 
 const renderHistoryTable = () => {
 	updateSummaryStats();
+	renderCuisineGallery();
     historyBody.innerHTML = '';
     if (!appData.participants || appData.participants.length === 0) {
         historyBody.innerHTML = '<tr><td colspan="4">Brak danych o uczestnikach.</td></tr>';
@@ -692,6 +727,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 </body>
 </html>
+
 
 
 
