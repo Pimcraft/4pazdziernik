@@ -707,8 +707,10 @@ const handleRefusal = async () => {
 document.addEventListener('DOMContentLoaded', () => {
     
     document.getElementById('btn-attend-yes').addEventListener('click', () => {
-        goToStep('details');
-    });
+	    goToStep('details');
+	    // DODANA LINIA: Płynne przewinięcie do nowego widoku
+	    document.getElementById('step-details').scrollIntoView({ behavior: 'smooth', block: 'center' });
+	});
 
     document.getElementById('btn-attend-no').addEventListener('click', () => {
 		goToStep('refuse');
@@ -767,6 +769,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 </body>
 </html>
+
 
 
 
