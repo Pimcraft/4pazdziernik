@@ -399,9 +399,7 @@
 
 <script>
 // 1. KONFIGURACJA
-const JSONBIN_API_KEY = '$2a$10$H0.wCz1nz..veATsmRss5.MmqaYSstRW4z5/4GWYPAd5BkRZgequi';
-const JSONBIN_BIN_ID = '68ca4e62d0ea881f4080a276';
-const JSONBIN_URL = `https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`;
+const GOOGLE_SCRIPT_URL = 'TUTAJ_WKLEJ_SKOPIOWANY_URL_ZE_SKRYPTU';
 const MAX_RETRIES = 5;
 
 // 2. REFERENCJE DO ELEMENTÓW DOM
@@ -552,28 +550,32 @@ const fetchWithRetry = async (url, options, retries = MAX_RETRIES) => {
 
 const loadData = async () => {
     try {
-        const response = await fetchWithRetry(`${JSONBIN_URL}/latest`, { headers: { 'X-Master-Key': JSONBIN_API_KEY } });
+        const response = await fetchWithRetry(GOOGLE_SCRIPT_URL); 
         const data = await response.json();
-        appData = data.record;
+        appData = data;
         renderHistoryTable();
         populatePersonSelect();
-		populateRefuseSelect();
+        populateRefuseSelect();
     } catch (error) {
-        console.error("Błąd ładowania danych po wielu próbach:", error);
-        historyBody.innerHTML = '<tr><td colspan="4">Nie udało się załadować danych. Odśwież stronę i spróbuj ponownie.</td></tr>';
+        console.error("Błąd ładowania danych z Google Sheets:", error);
+        historyBody.innerHTML = '<tr><td colspan="4">Nie udało się załadować danych. Odśwież stronę.</td></tr>';
     }
 };
 
 const saveData = async () => {
     try {
-        await fetchWithRetry(JSONBIN_URL, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json', 'X-Master-Key': JSONBIN_API_KEY },
+        await fetchWithRetry(GOOGLE_SCRIPT_URL, {
+            method: 'POST',
+            redirect: "follow", 
+            headers: {
+                "Content-Type": "text/plain;charset=utf-8",
+            },
             body: JSON.stringify(appData)
         });
+        // Po zapisie odświeżamy dane, aby mieć pewność, że wszystko jest aktualne
         await loadData();
     } catch (error) {
-        console.error("Błąd zapisu danych po wielu próbach:", error);
+        console.error("Błąd zapisu danych do Google Sheets:", error);
         resultAnnouncement.innerHTML = `<h2 style="color:red">Błąd zapisu! Spróbuj ponownie.</h2>`;
     }
 };
@@ -769,6 +771,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 </body>
 </html>
+
 
 
 
