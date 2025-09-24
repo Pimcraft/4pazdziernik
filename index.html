@@ -246,6 +246,30 @@
 		    transform: none;
 		    box-shadow: none;
 		}
+		/* --- NOWE STYLE DLA LICZNIKA --- */
+		#countdown-timer {
+		    display: flex;
+		    justify-content: center;
+		    gap: 1rem;
+		    margin: 1.5rem 0;
+		    font-weight: 300;
+		    font-size: 0.9rem;
+		    color: var(--text-muted);
+		}
+		#countdown-timer div {
+		    background-color: rgba(15, 52, 96, 0.4);
+		    padding: 0.8rem;
+		    border-radius: 8px;
+		    width: 80px;
+		    text-align: center;
+		}
+		#countdown-timer span {
+		    display: block;
+		    font-size: 2.5rem;
+		    font-weight: 700;
+		    color: var(--primary-color);
+		    line-height: 1.1;
+		}
     </style>
 </head>
 <body>
@@ -259,6 +283,12 @@
              <div id="step-invite">
                 <h1>Domówka: Kuchnie Świata! 🗺️</h1>
                 <h3>Zaproszenie na epicką podróż kulinarną</h3>
+				 <div id="countdown-timer">
+				    <div><span id="days">00</span>Dni</div>
+				    <div><span id="hours">00</span>Godzin</div>
+				    <div><span id="minutes">00</span>Minut</div>
+				    <div><span id="seconds">00</span>Sekund</div>
+				</div>
                 <p>Zanim przejdziemy dalej, odpowiedz na jedno, arcyważne pytanie...</p>
                 <h2>Czy <u>4 października</u> masz ochotę uczestniczyć w tej imprezie?</h2>
                 <div class="lore-section">
@@ -767,10 +797,32 @@ document.addEventListener('DOMContentLoaded', () => {
             lightbox.classList.add('hidden');
         }, 300);
     });
+	const partyDate = new Date('2025-10-04T18:00:00').getTime();
+const countdownInterval = setInterval(() => {
+    const now = new Date().getTime();
+    const distance = partyDate - now;
+
+    if (distance < 0) {
+        clearInterval(countdownInterval);
+        document.getElementById('countdown-timer').innerHTML = "<h2>Impreza trwa w najlepsze!</h2>";
+        return;
+    }
+
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    document.getElementById('days').innerText = String(days).padStart(2, '0');
+    document.getElementById('hours').innerText = String(hours).padStart(2, '0');
+    document.getElementById('minutes').innerText = String(minutes).padStart(2, '0');
+    document.getElementById('seconds').innerText = String(seconds).padStart(2, '0');
+}, 1000);
 </script>
 
 </body>
 </html>
+
 
 
 
