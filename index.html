@@ -422,6 +422,7 @@
 }
 
 /* --- NOWE STYLE DLA POWIADOMIEŃ TYPU TOAST --- */
+/* --- ZAKTUALIZOWANE STYLE DLA POWIADOMIEŃ TYPU TOAST --- */
 #toast-container {
     position: fixed;
     bottom: 20px;
@@ -431,7 +432,9 @@
     align-items: flex-end;
     gap: 10px;
     z-index: 2000;
-    width: clamp(280px, 80vw, 350px); /* Elastyczna szerokość */
+    width: clamp(280px, 80vw, 350px);
+    /* Zapobiega "przeciekaniu" kliknięć na elementy pod spodem */
+    pointer-events: none; 
 }
 
 .toast-notification {
@@ -444,22 +447,36 @@
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
     font-size: 0.9rem;
     line-height: 1.5;
-    animation: slideIn 0.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-    transform: translateX(120%);
+    pointer-events: auto; /* Umożliwia klikanie w powiadomienie */
+    
+    /* Nowa, połączona animacja trwająca 7.5s */
+    animation: toast-lifecycle 7.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
 }
 
+/* Ta klasa jest teraz używana tylko do natychmiastowego usunięcia */
 .toast-notification.exit {
     animation: slideOut 0.5s cubic-bezier(0.5, 0, 0.75, 0) forwards;
 }
 
-@keyframes slideIn {
-    to { transform: translateX(0); }
+/* NOWE, POŁĄCZONE KEYFRAMES */
+@keyframes toast-lifecycle {
+    /* Faza wejścia (0s -> 0.5s) */
+    0% { transform: translateX(120%); }
+    7% { transform: translateX(0); } /* 0.5s / 7.5s ≈ 7% */
+    
+    /* Faza wyświetlania (0.5s -> 7s) */
+    93% { transform: translateX(0); } /* 7s / 7.5s ≈ 93% */
+
+    /* Faza wyjścia (7s -> 7.5s) */
+    100% { transform: translateX(120%); }
 }
 
+/* Stara animacja wyjścia, nadal potrzebna do usuwania ręcznego */
 @keyframes slideOut {
     from { transform: translateX(0); }
     to { transform: translateX(120%); }
 }
+
 
 /* --- STYLE DLA TELEFONÓW --- */
 @media (max-width: 768px) {
@@ -885,46 +902,42 @@ let messagePlaylist = [];
 let toastInterval = null;
 
 // Funkcja do pokazywania pojedynczego powiadomienia
+// ZASTĄP STARĄ FUNKCJĘ TĄ NOWĄ WERSJĄ
 const showToast = (message) => {
     const container = document.getElementById('toast-container');
     if (!container) return;
 
     const isMobile = window.innerWidth <= 768;
-    const maxToasts = isMobile ? 2 : 3;
+    const maxToasts = isMobile ? 1 : 6; // Zmieniono na 6 dla desktopu, jak było w założeniach
 
-    // Na mobile, jeśli już jest powiadomienie, usuń je
+    // Na mobile, jeśli już jest powiadomienie, usuń je natychmiast
     if (isMobile && container.children.length > 0) {
-        container.children[0].classList.add('exit');
-        setTimeout(() => {
-            if (container.children[0]) container.children[0].remove();
-        }, 500); // Czas na animację wyjścia
+        // Używamy klasy .exit do animacji wyjścia
+        for (const child of container.children) {
+             child.classList.add('exit');
+             setTimeout(() => child.remove(), 500);
+        }
     }
 
     // Usuń najstarsze powiadomienia, jeśli przekroczono limit
     while (container.children.length >= maxToasts) {
-        container.children[0].classList.add('exit');
-        setTimeout(() => {
-            if (container.children[0]) container.children[0].remove();
-        }, 500);
-        // synchroniczne usunięcie z DOM, aby pętla działała poprawnie
-        container.children[0].remove();
+        const oldestToast = container.children[0];
+        oldestToast.classList.add('exit');
+        setTimeout(() => oldestToast.remove(), 500); // Daj czas na animację
+        // Usuń od razu z kolekcji, by pętla się nie zapętliła
+        oldestToast.remove();
     }
     
     const toast = document.createElement('div');
     toast.className = 'toast-notification';
     toast.textContent = message;
 
-    // Wstawienie na dole stosu
-    container.appendChild(toast);
+    // Po zakończeniu animacji CSS (która trwa 7.5s), usuń element z DOM
+    toast.addEventListener('animationend', () => {
+        toast.remove();
+    });
 
-    // Automatyczne usunięcie po 7 sekundach
-    setTimeout(() => {
-        toast.classList.add('exit');
-        // Po zakończeniu animacji wyjścia, usuń element z DOM
-        setTimeout(() => {
-            toast.remove();
-        }, 500);
-    }, 7000);
+    container.appendChild(toast);
 };
 
 // Główna funkcja inicjująca system
@@ -1217,6 +1230,7 @@ const countdownInterval = setInterval(() => {
 
 </body>
 </html>
+
 
 
 
