@@ -1023,45 +1023,74 @@ const showToast = (message) => {
 };
 
 // Główna funkcja inicjująca system
-// ZASTĄP TĘ FUNKCJĘ PONIŻSZĄ WERSJĄ
+// ZASTĄP CAŁĄ STARĄ FUNKCJĘ TĄ NOWĄ WERSJĄ
 const initializeToastSystem = () => {
-    let currentMessageIndex = 0;
+    // Pule tekstów: osobno domyślne, osobno spersonalizowane
+    let defaultTips = [];
+    let personalizedTipsPool = []; // Struktura: [{ name: 'Imię', tips: ['tekst 1', 'tekst 2'] }]
     
-    const generatePlaylist = () => {
+    // Ta funkcja buduje pulę spersonalizowanych tekstów na podstawie aktualnych danych
+    const updatePools = () => {
+        // Zawsze pobieraj świeżą listę domyślnych tekstów
+        defaultTips = [...cuisineTips.default];
+
+        // Wyczyść i zbuduj na nowo pulę spersonalizowanych tekstów
+        personalizedTipsPool = [];
         const confirmedGuests = appData.participants.filter(p => p.attending === true && p.cuisine);
-        let personalizedTips = [];
 
         if (confirmedGuests.length > 0) {
             confirmedGuests.forEach(guest => {
                 const cuisineFullName = guest.cuisine;
                 const cuisineBaseName = Object.keys(cuisineTips).find(key => cuisineFullName.startsWith(key));
+                
                 if (cuisineBaseName && cuisineTips[cuisineBaseName]) {
-                    
-                    // --- ZMIANA W TEJ LINII ---
-                    // Zamiast imienia, wstawiamy imię ze znacznikami %%
-                    const tips = cuisineTips[cuisineBaseName].map(tip => tip.replace(/\$\{name\}/g, `%%${guest.base}%%`));
-                    
-                    personalizedTips.push(...tips);
+                    // Dodajemy obiekt z imieniem i *szablonami* tekstów
+                    personalizedTipsPool.push({
+                        name: guest.base,
+                        tips: cuisineTips[cuisineBaseName]
+                    });
                 }
             });
         }
-        
-        messagePlaylist = [...personalizedTips, ...cuisineTips.default];
-        messagePlaylist.sort(() => Math.random() - 0.5);
     };
 
-    generatePlaylist();
-
+    // Uruchom interwał, który będzie losował i wyświetlał powiadomienia
     if (toastInterval) clearInterval(toastInterval);
-    toastInterval = setInterval(() => {
-        if (messagePlaylist.length > 0) {
-            const message = messagePlaylist[currentMessageIndex];
-            showToast(message);
-            currentMessageIndex = (currentMessageIndex + 1) % messagePlaylist.length;
-        }
-    }, 5000);
 
-    return generatePlaylist;
+    toastInterval = setInterval(() => {
+        let message = "";
+
+        // Losowanie: 75% szans na tekst spersonalizowany (jeśli są dostępne)
+        if (personalizedTipsPool.length > 0 && Math.random() < 0.75) {
+            // 1. Wylosuj osobę
+            const randomPersonIndex = Math.floor(Math.random() * personalizedTipsPool.length);
+            const personData = personalizedTipsPool[randomPersonIndex];
+            
+            // 2. Wylosuj tekst dla tej osoby
+            const randomTipIndex = Math.floor(Math.random() * personData.tips.length);
+            const tipTemplate = personData.tips[randomTipIndex];
+            
+            // 3. Wstaw imię do szablonu (ze znacznikami do kolorowania)
+            message = tipTemplate.replace(/\$\{name\}/g, `%%${personData.name}%%`);
+        } else {
+            // W przeciwnym wypadku (lub gdy nie ma tekstów spersonalizowanych), wylosuj tekst domyślny
+            if (defaultTips.length > 0) {
+                const randomDefaultIndex = Math.floor(Math.random() * defaultTips.length);
+                message = defaultTips[randomDefaultIndex];
+            }
+        }
+
+        // Jeśli udało się wylosować wiadomość, pokaż ją
+        if (message) {
+            showToast(message);
+        }
+    }, 5000); // Nowe powiadomienie co 5 sekund
+
+    // Zaktualizuj pule po raz pierwszy (zanim załadują się dane, `personalizedTipsPool` będzie puste)
+    updatePools();
+
+    // Zwróć funkcję aktualizującą, aby `loadData` mogło jej użyć
+    return updatePools;
 };
 	
 const loadData = async () => {
@@ -1312,6 +1341,7 @@ const countdownInterval = setInterval(() => {
 
 </body>
 </html>
+
 
 
 
