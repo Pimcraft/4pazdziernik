@@ -450,8 +450,7 @@
     pointer-events: auto; /* Umożliwia klikanie w powiadomienie */
     
     /* Nowa, połączona animacja trwająca 7.5s */
-    animation: toast-lifecycle 7.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-}
+    animation: toast-lifecycle 10.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;}
 
 /* Ta klasa jest teraz używana tylko do natychmiastowego usunięcia */
 .toast-notification.exit {
@@ -463,21 +462,19 @@
     font-weight: 600;
 }
 
-/* NOWE, POŁĄCZONE KEYFRAMES */
+/* ZMIANA: Zaktualizowane klatki kluczowe dla dłuższego czasu */
 @keyframes toast-lifecycle {
     /* Faza wejścia (0s -> 0.5s) */
     0% { transform: translateX(120%); }
-    7% { transform: translateX(0); } /* 0.5s / 7.5s ≈ 7% */
+    5% { transform: translateX(0); } /* 0.5s / 10.5s ≈ 5% */
     
-    /* Faza wyświetlania (0.5s -> 7s) */
-    93% { transform: translateX(0); } /* 7s / 7.5s ≈ 93% */
+    /* Faza wyświetlania (0.5s -> 10s) */
+    95% { transform: translateX(0); } /* 10s / 10.5s ≈ 95% */
 
-    /* Faza wyjścia (7s -> 7.5s) */
+    /* Faza wyjścia (10s -> 10.5s) */
     100% { transform: translateX(120%); }
 }
-		
 
-/* Stara animacja wyjścia, nadal potrzebna do usuwania ręcznego */
 @keyframes slideOut {
     from { transform: translateX(0); }
     to { transform: translateX(120%); }
@@ -1341,6 +1338,7 @@ const countdownInterval = setInterval(() => {
 
 </body>
 </html>
+
 
 
 
