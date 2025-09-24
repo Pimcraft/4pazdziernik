@@ -214,44 +214,107 @@
 		    margin-top: 1.5rem;      /* Odstęp od nagłówka "Pula Dostępnych Kuchni" */
 		}
 
-		@media (max-width: 768px) {
-    #results-table thead {
-        display: none; /* Ukryj nagłówki na mobile */
-    }
+		/* --- MOBILE ULEPSZENIA DLA SEKCIJI SZCZEGÓŁÓW --- */
+@media (max-width: 768px) {
+  .details-section {
+    padding: 0 0.5rem;
+  }
 
-    #results-table tbody tr {
-        display: block; /* Każdy wiersz to osobny blok */
-        margin-bottom: 1.5rem;
-        border: 1px solid var(--border-color);
-        border-radius: var(--border-radius);
-        padding: 0.5rem;
-    }
-    
-    #results-table tbody tr:nth-child(even) {
-        background-color: transparent; /* Resetujemy tło "zebry" */
-    }
-    
-    #results-table td {
-        display: flex; /* Ustawiamy komórki w trybie flex */
-        justify-content: space-between; /* Etykieta po lewej, wartość po prawej */
-        align-items: center;
-        text-align: right; /* Wyrównaj tekst wartości do prawej */
-        padding: 0.8rem 0.5rem;
-        border-bottom: 1px solid var(--border-color);
-    }
-    
-    #results-table td:last-child {
-        border-bottom: none; /* Usuń ostatnią kreskę */
-    }
+  .details-section h2 {
+    font-size: 1.6rem;
+    line-height: 1.2;
+    margin-bottom: 0.25rem;
+  }
 
-    #results-table td::before {
-        content: attr(data-label); /* Pobierz tekst etykiety z atrybutu */
-        font-weight: 600;
-        color: var(--text-muted);
-        text-align: left; /* Wyrównaj etykietę do lewej */
-        margin-right: 1rem;
-    }
+  .details-box {
+    padding: 1rem;
+    border: 1px solid var(--border-color);
+    background: rgba(15, 52, 96, 0.45);
+  }
+
+  .details-box h3 {
+    font-size: 1.05rem;
+    line-height: 1.3;
+    gap: 0.4rem;
+  }
+
+  .details-box p {
+    font-size: 0.95rem;
+  }
+
+  /* Transport: z tabeli na „karty” */
+  .transport-table {
+    display: block;
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+  }
+
+  .transport-table tbody {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .transport-table tr {
+    display: grid;
+    grid-template-columns: 1fr;
+    background: rgba(15, 52, 96, 0.35);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 0.75rem 0.9rem;
+  }
+
+  .transport-table td {
+    display: block;
+    border: 0;
+    padding: 0.25rem 0;
+  }
+
+  .transport-table td:first-child {
+    width: auto;
+    white-space: normal;
+    font-weight: 700;
+    color: var(--text-color);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding-bottom: 0.25rem;
+  }
+
+  .transport-table td:last-child {
+    color: var(--text-muted);
+    padding-top: 0;
+  }
+
+  .transport-icon {
+    width: 28px;
+    text-align: center;
+    flex: 0 0 28px;
+  }
+
+  /* Mapy: pełna szerokość i wygodne odstępy */
+  .map-gallery {
+    flex-direction: column;
+    gap: 0.75rem;
+    align-items: stretch;
+  }
+
+  .map-gallery img {
+    width: 100%;
+    max-width: 100%;
+    border-radius: 12px;
+  }
+
+  /* Lightbox: większy przycisk zamknięcia dla palców */
+  #lightbox .close {
+    top: 1rem;
+    right: 1rem;
+    font-size: 2.5rem;
+    padding: 0.25rem 0.5rem;
+  }
 }
+
 		
 		/* Zmniejszamy rozmiar kafelków wewnątrz galerii */
 		.cuisine-gallery .carousel-item {
@@ -309,6 +372,31 @@
 		    color: var(--primary-color);
 		    line-height: 1.1;
 		}
+		/* --- NOWE STYLE DLA DYMKU Z PORADAMI --- */
+		#tip-bubble {
+		    margin: 1.5rem auto 0;
+		    max-width: 80%;
+		    background-color: rgba(15, 52, 96, 0.5);
+		    border-left: 3px solid var(--primary-color);
+		    padding: 1rem 1.5rem;
+		    border-radius: 0 var(--border-radius) var(--border-radius) 0;
+		    text-align: center;
+		    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+		    opacity: 0; /* Domyślnie ukryty */
+		    transform: translateY(20px); /* Startuje lekko niżej */
+		}
+		
+		#tip-bubble.visible {
+		    opacity: 1;
+		    transform: translateY(0);
+		}
+		
+		#tip-bubble p {
+		    color: var(--text-muted);
+		    font-style: italic;
+		    margin-bottom: 0;
+		    font-size: 0.9rem;
+		}
     </style>
 </head>
 <body>
@@ -327,6 +415,9 @@
 				    <div><span id="hours">00</span>Godzin</div>
 				    <div><span id="minutes">00</span>Minut</div>
 				    <div><span id="seconds">00</span>Sekund</div>
+				</div>
+				 <div id="tip-bubble">
+				    <p id="tip-text">Ładowanie protokołu... dobrej zabawy...</p>
 				</div>
                 <p>Zanim przejdziemy dalej, odpowiedz na jedno, arcyważne pytanie...</p>
                 <h2>Czy <u>4 października</u> masz ochotę uczestniczyć w tej imprezie?</h2>
@@ -457,11 +548,11 @@
 
          <div class="details-box">
             <h3>🗺️ Mapy Dojazdu (kliknij, aby powiększyć)</h3>
-            <div class="map-gallery">
-                <img src="1.png" alt="Mapa okolicy">
-                <img src="2.png" alt="Mapa transportu">
-                <img src="3.png" alt="Mapa parkingu">
-            </div>
+<div class="map-gallery">
+  <img src="1.png" alt="Mapa okolicy" loading="lazy" decoding="async">
+  <img src="2.png" alt="Mapa transportu" loading="lazy" decoding="async">
+  <img src="3.png" alt="Mapa parkingu" loading="lazy" decoding="async">
+</div>
         </div>
     </div>
     
@@ -617,6 +708,109 @@ const fetchWithRetry = async (url, options, retries = MAX_RETRIES) => {
     }
 };
 
+	
+	const cuisineTips = {
+    "default": [
+        "Ciekawe, kto pierwszy zapyta o hasło do Wi-Fi...",
+        "Plotka głosi, że gospodarze ukryli najlepsze trunki. Czas na poszukiwania!",
+        "Pamiętaj: kalorie zjedzone w dobrym towarzystwie nie tuczą. To fakt naukowy.",
+        "Trwa zakulisowa walka o to, kto przyniesie najlepsze danie. Stawki są wysokie.",
+        "Jeśli muzyka będzie zła, pamiętaj, że zawsze można zacząć grać w planszówki.",
+        "Koty już oceniają, czyje kolana będą dziś najlepszym tronem. Przygotuj się."
+    ],
+    "Meksykańska": [
+        "Hola ${name}! Czy Twoje tacos będą tak ostre, jak atmosfera po trzeciej kolejce?",
+        "Słyszałem, że ${name} robi guacamole, które leczy złamane serca. Oby nie było dziś potrzebne!",
+        "${name}, mam nadzieję, że Twoja quesadilla będzie bardziej sycąca niż plotki, które dziś usłyszymy. 😉"
+    ],
+    "Włoska": [
+        "Mamma mia, ${name}! Czy to będzie pizza na cienkim, czy grubym... podkładzie do dobrej imprezy?",
+        "${name}, jeśli Twoje spaghetti będzie tak dobre, jak wygląda, to reszta dań może się schować.",
+        "Podobno ${name} robi tiramisu tak dobre, że anioły śpiewają. Czekamy na ten niebiański chór!"
+    ],
+    "Japońska": [
+        "${name}, czy Twoje sushi będzie zwinięte równie perfekcyjnie, co plany na tę noc?",
+        "Słyszałem, że ${name} przyniesie ramen. Oby był tak głęboki w smaku, jak nasze rozmowy o 3 nad ranem.",
+        "Uważajcie! Podobno wasabi od ${name} potrafi odblokować wspomnienia z poprzednich wcieleń."
+    ],
+    "Polska": [
+        "Hej, ${name}! Czy Twoje pierogi będą z wody czy odsmażane? To pytanie dzieli naród bardziej niż polityka.",
+        "Schabowy od ${name} podobno ma rozmiar małego kontynentu. Przygotujcie żołądki.",
+        "Słyszałem, że bigos od ${name} 'przegryzał się' od ostatniej imprezy. To będzie moc!"
+    ],
+    "Indyjska": [
+        "${name}, czy Twoje curry będzie tak aromatyczne, że sąsiedzi zapukają z własnymi talerzami?",
+        "Podobno ${name} robi butter chicken, który jest bardziej kremowy niż obietnice polityków. Czekam!",
+        "Jeśli ${name} przyniesie coś z dużą ilością chili, przygotujcie gaśnice... i szklanki z mlekiem."
+    ],
+    "Niemiecka": [
+        "${name}, liczymy na porządny, niemiecki Ordnung na talerzu! Würst musi być idealnie prosty.",
+        "Czy to prawda, ${name}, że Twój Schnitzel będzie większy niż mapa Berlina? Zobaczymy!",
+        "Słyszałem, że ${name} robi sałatkę ziemniaczaną. Oby była tak solidna jak niemiecka motoryzacja."
+    ],
+    "Hiszpańska": [
+        "${name}, czy Twoja paella będzie miała więcej owoców morza niż jest uczestników imprezy?",
+        "Tapas od ${name}? Brzmi jak idealny plan, żeby spróbować wszystkiego i nie wybrać niczego konkretnego. Jak w życiu.",
+        "Czy sangria od ${name} będzie na tyle mocna, żebyśmy wszyscy zaczęli mówić po hiszpańsku? ¡Ojalá!"
+    ]
+    // Możesz dodać więcej kuchni i tekstów w tym formacie!
+};
+
+	const startTipCarousel = () => {
+    const tipBubble = document.getElementById('tip-bubble');
+    const tipText = document.getElementById('tip-text');
+    if (!tipBubble || !tipText) return;
+
+    let messagePlaylist = [];
+
+    // 1. Zbierz potwierdzonych gości z przypisaną kuchnią
+    const confirmedGuests = appData.participants.filter(p => p.attending === true && p.cuisine);
+
+    // 2. Stwórz spersonalizowaną listę tekstów
+    if (confirmedGuests.length > 0) {
+        confirmedGuests.forEach(guest => {
+            const cuisineFullName = guest.cuisine; // np. "Meksykańska 🌮"
+            const cuisineBaseName = Object.keys(cuisineTips).find(key => cuisineFullName.includes(key));
+            
+            if (cuisineBaseName && cuisineTips[cuisineBaseName]) {
+                const personalizedTips = cuisineTips[cuisineBaseName].map(tip => tip.replace('${name}', guest.base));
+                messagePlaylist.push(...personalizedTips);
+            }
+        });
+    }
+
+    // 3. Jeśli nie ma spersonalizowanych tekstów, użyj domyślnych
+    if (messagePlaylist.length === 0) {
+        messagePlaylist.push(...cuisineTips.default);
+    }
+
+    // 4. Wymieszaj teksty dla lepszego efektu
+    messagePlaylist.sort(() => Math.random() - 0.5);
+    
+    let currentTipIndex = 0;
+
+    const showNextTip = () => {
+        // Ukryj dymek (animacja fade-out)
+        tipBubble.classList.remove('visible');
+
+        // Poczekaj na koniec animacji ukrywania
+        setTimeout(() => {
+            // Zmień tekst
+            tipText.textContent = messagePlaylist[currentTipIndex];
+            currentTipIndex = (currentTipIndex + 1) % messagePlaylist.length;
+            
+            // Pokaż dymek z nowym tekstem (animacja fade-in)
+            tipBubble.classList.add('visible');
+        }, 600); // Czas musi być nieco dłuższy niż transition w CSS
+    };
+    
+    // Pokaż pierwszy tekst od razu
+    setTimeout(showNextTip, 2000); // Dajmy chwilę na załadowanie strony
+
+    // Ustaw interwał zmiany tekstów
+    setInterval(showNextTip, 8000); // Zmieniaj tekst co 8 sekund
+};
+
 const loadData = async () => {
     try {
         const response = await fetchWithRetry(GOOGLE_SCRIPT_URL); 
@@ -625,6 +819,7 @@ const loadData = async () => {
         renderHistoryTable();
         populatePersonSelect();
         populateRefuseSelect();
+		startTipCarousel();
     } catch (error) {
         console.error("Błąd ładowania danych z Google Sheets:", error);
         historyBody.innerHTML = '<tr><td colspan="4">Nie udało się załadować danych. Odśwież stronę.</td></tr>';
@@ -857,10 +1052,12 @@ const countdownInterval = setInterval(() => {
     document.getElementById('minutes').innerText = String(minutes).padStart(2, '0');
     document.getElementById('seconds').innerText = String(seconds).padStart(2, '0');
 }, 1000);
+
 </script>
 
 </body>
 </html>
+
 
 
 
