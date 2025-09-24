@@ -890,7 +890,7 @@ const showToast = (message) => {
     if (!container) return;
 
     const isMobile = window.innerWidth <= 768;
-    const maxToasts = isMobile ? 1 : 6;
+    const maxToasts = isMobile ? 1 : 3;
 
     // Na mobile, jeśli już jest powiadomienie, usuń je
     if (isMobile && container.children.length > 0) {
@@ -1217,6 +1217,7 @@ const countdownInterval = setInterval(() => {
 
 </body>
 </html>
+
 
 
 
