@@ -803,94 +803,169 @@ const fetchWithRetry = async (url, options, retries = MAX_RETRIES) => {
         "Plotka głosi, że gospodarze ukryli najlepsze trunki. Czas na poszukiwania!",
         "Pamiętaj: kalorie zjedzone w dobrym towarzystwie nie tuczą. To fakt naukowy.",
         "Trwa zakulisowa walka o to, kto przyniesie najlepsze danie. Stawki są wysokie.",
-        "Koty już oceniają, czyje kolana będą dziś najlepszym tronem. Przygotuj się."
+        "Koty już oceniają, czyje kolana będą dziś najlepszym tronem. Przygotuj się.",
+		"Jeśli komuś nie posmakuje jedzenie, zawsze możemy zamówić pizzę i udawać, że to kuchnia włoska.",
+		 "Pamiętaj, impreza jest o 18 a nie 21:37!",
+    "Wśród nas jest podobno kulinarny ekspert, który o każdym daniu powie 'ja bym to zrobił/a inaczej'.",
+    "Jeśli jedzenie nie zostanie sfotografowane i wrzucone na Insta, to znaczy, że się nie liczy.",
+    "Prosimy o nieporuszanie tematów polityki i religii. Chyba, że naprawdę lubicie chaos.",
+    "Słuchajcie uważnie, bo najlepsze plotki będą serwowane między daniem głównym a deserem.",
+    "Jeśli coś się przypali, wystarczy powiedzieć, że to 'wędzony' akcent. Nikt się nie zorientuje.",
+    "Ktoś na pewno jest na diecie, ale pamiętajcie - 'jutro' to idealny dzień, żeby zacząć od nowa.",
+    "Pamiętaj o zdjęciu butów. Gospodarze zainwestowali w nowy dywan, a nie chcemy 'inby'."
     ],
-    // --- Kuchnie już przypisane ---
-    "Niemiecka": [
-        "${name}, liczymy na porządny, niemiecki Ordnung na talerzu! Würst musi być idealnie prosty.",
-        "Czy to prawda, ${name}, że Twój Schnitzel będzie większy niż mapa Berlina? Zobaczymy!",
-        "Słyszałem, że ${name} robi sałatkę ziemniaczaną. Oby była tak solidna jak niemiecka motoryzacja."
+      "Niemiecka": [
+        "Słyszałem, że ${name} wjeżdża ze sznyclem wielkości maski od Passata. To musi być prawda.",
+        "Ciekawe, czy danie, które przygotuje ${name}, będzie miało niemiecką precyzję. Każdy ziemniak pod linijkę.",
+        "${name} ma kuchnię niemiecką... Oby to nie był tylko wurst z musztardą, bo będzie 'zaorane'.",
+        "Podobno ${name} robi sałatkę ziemniaczaną. Oby była tak solidna i niezawodna jak niemiecka motoryzacja.",
+        "Mam nadzieję, że ${name} nie potraktuje nas samymi 'kartoflami'. Czekamy na kulinarny blitzkrieg!",
+		  "Ciekawe, czy danie, które zrobi ${name}, będzie tak solidne jak Most Rędziński. Oczekujemy monumentalnej konstrukcji smaku!",
+"Jeśli danie od ${name} będzie niedobre, to wyślemy je MPK na Psie Pole. I tak nie dojedzie."
     ],
     "Angielska": [
-        "Good heavens, ${name}! Czy to będzie fish and chips, czy może shepherd's pie?",
-        "Mam nadzieję, że danie od ${name} będzie lepsze niż angielska pogoda!",
-        "Jeśli ${name} robi Yorkshire pudding, to rezerwuję sobie od razu trzy sztuki."
+        "Kuchnia angielska... ${name}, liczymy, że to nie będzie fasolka na toście, bo zrobimy kulinarny Brexit.",
+        "Ciekawe, czy ${name} o 17:00 zrobi przerwę na herbatkę. Z mlekiem czy bez?",
+        "Jeśli ${name} robi Yorkshire pudding, to rezerwuję sobie od razu trzy. Na wynos też.",
+        "Danie przygotowane przez ${name} albo będzie 'lovely', albo... cóż, przynajmniej pogoda jest ładna. Oh, wait.",
+        "Fish & Chips? ${name}, mam nadzieję, że ryba nie będzie sucha jak angielski humor.",
+		"Podobno ${name} robi danie tak blade, że wygląda jak turysta z Anglii po zwiedzaniu wrocławskiego Rynku w deszczu.",
+"Fish & Chips? ${name}, mam nadzieję, że frytki nie będą tak wiotkie jak tory tramwajowe na Oławskiej."
     ],
     "Indyjska": [
-        "${name}, czy Twoje curry będzie tak aromatyczne, że sąsiedzi zapukają z własnymi talerzami?",
-        "Podobno ${name} robi butter chicken, który jest bardziej kremowy niż obietnice polityków. Czekam!",
-        "Jeśli ${name} przyniesie coś z dużą ilością chili, przygotujcie gaśnice... i szklanki z mlekiem."
+        "${name} i kuchnia indyjska. Przygotujcie kubki smakowe na jazdę bez trzymanki... i szklanki z mlekiem.",
+        "Podobno ${name} robi butter chicken tak kremowy, że aż chce się powiedzieć 'dej, mam horom curke na gluten'.",
+        "Ciekawe, czy curry, które zaserwuje ${name}, będzie miało tyle kolorów, co scena tańca w filmie z Bollywood.",
+        "Jeśli ${name} przywiezie coś naprawdę ostrego, to oficjalnie otwieramy zawody 'kto pierwszy zapłacze'.",
+        "Ponoć ${name} potrafi tak doprawić danie, że smakuje jak podróż do Bombaju. Bez biletu i wizy.",
+		"Słyszałem, że ${name} gotuje tak ostro, że aż krasnale pod jego/jej domem szukają Odry, żeby się schłodzić.",
+"Curry od ${name} podobno ma barwę ostrzegawczą, jak komunikaty MPK o kolejnym wykolejeniu. Wchodzimy na własne ryzyko!"
     ],
     "Gruziń.": [
-        "Gaumarjos, ${name}! Czy Twoje chaczapuri będzie miało wystarczająco dużo sera, by uszczęśliwić cały naród?",
-        "Słyszałem, że ${name} szykuje chinkali. Uczymy się je jeść bez utraty cennego rosołku!",
-        "Jeśli ${name} przyniesie wino z Gruzji, impreza oficjalnie osiągnie status legendy."
+        "Gaumarjos! ${name} i kuchnia gruzińska. Oby chaczapuri miało tyle sera, co kot napłakał... i to dużo kotów.",
+        "Słyszałem, że ${name} szykuje chinkali. Będzie instruktaż jedzenia, żeby cały misterny plan nie poszedł w...",
+        "Jeśli ${name} przyniesie prawdziwe gruzińskie wino, to toasty będą trwały do rana. Każdy po kolei.",
+        "${name}, czy Twoje danie będzie tak gościnne i otwarte jak serca Gruzinów? Liczymy na to!",
+        "Chodzą słuchy, że ${name} ma przepis na adżarskie tak dobry, że aż chce się tam zamieszkać.",
+		"Jeśli chaczapuri, które zrobi ${name}, będzie miało za mało sera, to zrobimy mu/jej taką inbę, jakiej Trójkąt Bermudzki nie widział.",
+"Podobno ${name} toasty wznosi z takim zapałem, że aż Iglica się trzęsie. Czekamy na pokaz!"
     ],
     "Hiszp.": [
-        "${name}, czy Twoja paella będzie miała więcej owoców morza niż jest uczestników imprezy?",
-        "Tapas od ${name}? Brzmi jak idealny plan, żeby spróbować wszystkiego i nie wybrać niczego konkretnego. Jak w życiu.",
-        "Czy sangria od ${name} będzie na tyle mocna, żebyśmy wszyscy zaczęli mówić po hiszpańsku? ¡Ojalá!"
+        "¡Olé! ${name} ma kuchnię hiszpańską. Czekamy na paellę czy raczej na sjestę po jedzeniu?",
+        "Ciekawe, czy danie od ${name} będzie tak głośne i żywiołowe jak rozmowa Hiszpanów w barze tapas.",
+        "Czy to prawda, że ${name} robi sangrię? Jeśli tak, to 'mañana' nikt nie idzie do pracy.",
+        "Tapas to podobno nie jedzenie, to styl życia. ${name}, pokaż nam, jak się żyje!",
+        "${name} i jego/jej patatas bravas... Oby sos był ostry jak temperament torreadora.",
+		"Fiesta u ${name} będzie tak dobra, że skończymy o świcie, szukając drogi do domu jak zagubiony krasnal.",
+"Czy to prawda, że sangria od ${name} jest tak mocna, że po jednym kubku tramwaj Plus sam wydaje się dobrym pomysłem?"
     ],
     "Francuska": [
-        "Bonjour, ${name}! Czy Twoje danie będzie tak wykwintne, jak francuskie perfumy?",
+        "Bonjour! ${name} i kuchnia francuska. Czy będzie coś, czego nazwy nie będziemy umieli wymówić?",
         "Jeśli ${name} robi zupę cebulową, to mam nadzieję, że będzie miała grzankę z serem grubą na palec.",
-        "Bagietki, sery, wino... ${name}, czy Ty na pewno robisz jedno danie, a nie całą francuską ucztę?"
+        "Podobno ${name} przyniesie ślimaki. Odważni zjedzą, reszta będzie robić zdjęcia na Insta.",
+        "Elegancja-Francja! Ciekawe, czy danie od ${name} będzie wymagało użycia więcej niż jednego widelca.",
+        "Crème brûlée? ${name}, liczymy na idealnie chrupiącą skorupkę. Będziemy stukać łyżeczkami!",
+		"Podobno ${name} robi danie tak wykwintne, że je się je z zadartym nosem, patrząc z góry na innych jak z wieży Sky Tower.",
+"Bagietka od ${name} jest podobno dłuższa niż korek na moście Grunwaldzkim w godzinach szczytu."
     ],
-    // --- Nowe teksty dla pozostałych kuchni ---
     "Czeska": [
-        "Ahoj, ${name}! Czy do Twoich knedlików będzie gulasz tak gęsty, że aż łyżka stanie?",
-        "Smažený sýr od ${name} podobno ciągnie się bardziej niż fabuła w czeskich filmach. Sprawdzimy!",
-        "Czy to prawda ${name}, że Twoje danie najlepiej popić zimnym... napojem chmielowym? 😉"
+        "Ahoj! ${name} gotuje po czesku. Oby knedliki były tak puszyste jak Krecik z bajki.",
+        "Smažený sýr... ${name}, czy to prawda, że ser będzie się ciągnął aż do Pragi?",
+        "Jeśli ${name} zrobi gulasz, to mam nadzieję, że będzie tak dobry, że aż sąsiedzi wpadną na kontrolę.",
+        "Podobno do dania od ${name} najlepiej pasuje zimny napój chmielowy. Ktoś sprawdzał?",
+        "Ciekawe, czy danie od ${name} będzie miało sens, czy to będzie 'czeski film'.",
+		"Czeski film! ${name} gotuje tak blisko granicy, że aż czuć zapach knedlików na Dworcu Głównym.",
+"Smažený sýr, który przygotuje ${name}, podobno będzie się ciągnął dłużej niż budowa tramwaju na Nowy Dwór."
     ],
     "Grecka": [
-        "Opa, ${name}! Czy Twoja moussaka będzie miała tyle warstw, co starożytna grecka historia?",
-        "Souvlaki od ${name}? Mam nadzieję, że będą tak dobre, że aż bogowie na Olimpie poczują zazdrość.",
-        "Podobno ${name} robi sałatkę z fetą tak autentyczną, że można poczuć bryzę z Santorini."
+        "Opa! ${name} i kuchnia grecka! Czy będzie taniec Zorby i tłuczenie talerzy?",
+        "Moussaka, którą rzekomo robi ${name}, ma podobno więcej warstw niż grecki dług publiczny.",
+        "Jeśli ${name} zaserwuje fetę, to sprawdzimy, czy jest prawdziwa, czy to tylko 'ser typu greckiego'.",
+        "Souvlaki? ${name}, mam nadzieję, że będą tak dobre, że aż bogowie na Olimpie poczują zazdrość.",
+        "Czekamy na danie od ${name}. Oby było tak słoneczne i beztroskie jak wakacje na Krecie.",
+		"Jeśli ${name} będzie tłuc talerze, to mam nadzieję, że z większą precyzją niż motorniczy MPK wjeżdżający na zwrotnicę.",
+"Feta od ${name} ma być tak słona jak woda w Hydropolis. Prawda to?"
     ],
     "Japońska": [
-        "${name}, czy Twoje sushi będzie zwinięte równie perfekcyjnie, co plany na tę noc?",
-        "Uważajcie! Podobno wasabi od ${name} potrafi odblokować wspomnienia z poprzednich wcieleń.",
-        "Słyszałem, że ${name} przyniesie ramen. Oby był tak głęboki w smaku, jak nasze rozmowy o 3 nad ranem."
+        "Konnichiwa! ${name} i Japonia na talerzu. Oby sushi było zwinięte ciaśniej niż budżet na koniec miesiąca.",
+        "Ciekawe, czy ${name} potrafi jeść pałeczkami, czy będzie prosić o 'sprzęt dla początkujących'.",
+        "Podobno wasabi, które przyniesie ${name}, potrafi zresetować ustawienia fabryczne w mózgu.",
+        "Ramen? ${name}, liczymy na bulion tak głęboki, jak przemyślenia po obejrzeniu anime Evangelion.",
+        "Jeśli danie od ${name} będzie miało smak umami, to znaczy, że impreza jest udana.",
+		"Sushi, które zrobi ${name}, musi być idealnie zwinięte. Inaczej będzie wstyd na całe Krzyki.",
+"Ramen od ${name} ma podobno taką moc, że po zjedzeniu można zobaczyć wszystkie 600 wrocławskich krasnali naraz."
     ],
     "Koreań.": [
-        "Annyeong, ${name}! Czy Twoje kimchi będzie tak ostre, że aż K-Pop sam zacznie grać w głośnikach?",
-        "Bibimbap od ${name}? Mieszajcie dobrze, podobno im większy bałagan w misce, tym lepszy smak!",
-        "Słyszałem, że ${name} robi bulgogi. To danie jest tak dobre, że staje się narodowym skarbem... tej imprezy."
+        "Annyeong! ${name} wlatuje z kuchnią koreańską. Oby kimchi nie pachniało na całą klatkę schodową.",
+        "Bibimbap to podobno 'cały ten bałagan w misce'. ${name}, pokaż nam, jak się robi artystyczny nieład!",
+        "Jeśli ${name} robi coś ostrego, to niech lepiej powie, gdzie jest najbliższy sklep z nabiałem.",
+        "Fani K-Popu łączcie się! ${name} robi bulgogi. Może nawet zatańczymy jakiś układ?",
+        "Danie od ${name} będzie tak dobre, że aż powiemy 'saranghaeyo' do talerza.",
+		"Kimchi od ${name} jest ponoć tak intensywne w zapachu, że aż tynk odpada w Hali Stulecia.",
+"Słyszałem, że danie od ${name} jest tak ostre, że aż Afrykarium wydaje się chłodnym, przyjemnym miejscem."
     ],
     "Meksyk.": [
-        "Hola ${name}! Czy Twoje tacos będą tak ostre, jak atmosfera po trzeciej kolejce?",
-        "Słyszałem, że ${name} robi guacamole, które leczy złamane serca. Oby nie było dziś potrzebne!",
-        "${name}, mam nadzieję, że Twoja quesadilla będzie bardziej sycąca niż plotki, które dziś usłyszymy."
+        "¡Arriba! ${name} i kuchnia meksykańska! Pytanie wieczoru: jak ostre będzie 'średnio ostre'?",
+        "Słyszałem, że ${name} robi guacamole tak dobre, że leczy złamane serca i pusty portfel.",
+        "Jeśli ${name} przyniesie tacos, to niech nikt nie próbuje jeść ich nożem i widelcem. Będzie ban.",
+        "Czy to prawda, że po daniu od ${name} będziemy krzyczeć 'AY, CARAMBA!'? Sprawdzimy.",
+        "Mam nadzieję, że tequila do popicia też będzie. ${name}, nie zawiedź nas!",
+		"Po zjedzeniu tacos od ${name} podobno robi się tak gorąco, że człowiek sam chce wskoczyć do fontanny na Rynku.",
+"Jeśli danie od ${name} będzie zbyt ostre, to będziemy szukać pomocy szybciej niż MPK nowego autobusu na zastępstwo."
     ],
     "Portugalska": [
-        "Olá, ${name}! Czy Twoje danie z owocami morza będzie tak świeże, jak poranek w Lizbonie?",
-        "Pastel de nata od ${name}? Jeśli tak, to oficjalnie ogłaszam konkurs, kto zje najwięcej.",
-        "Jeśli ${name} przyniesie bacalhau, to szykujcie się na smak Portugalii w najlepszym wydaniu."
+        "Olá! ${name} i kuchnia portugalska. Czy będzie Cristiano Ronaldo na talerzu? A nie, to tylko dorsz.",
+        "Pastel de nata to podobno małe dzieła sztuki. ${name}, liczymy na Twoje zdolności artystyczne!",
+        "Bacalhau można przyrządzić na 365 sposobów. Ciekawe, który z nich wybrał/a ${name}.",
+        "Jeśli danie od ${name} będzie zawierać owoce morza, to miejmy nadzieję, że są świeższe niż newsy w TV.",
+        "Portugalia to nie tylko Porto. ${name}, udowodnij, że Twoje danie jest równie warte odkrycia!",
+				"Danie, które przygotuje ${name}, ma być tak dobre, że aż szkoda będzie jechać na wakacje do Portugalii. Wrocław wystarczy!",
+"Pastel de nata od ${name}? Lepsze to niż stanie w kolejce do kas zoo w słoneczną niedzielę."
     ],
     "Tajska": [
-        "${name}, czy Twoje pad thai będzie idealnie balansować między słodkim, kwaśnym a ostrym? Cała nadzieja w Tobie!",
+        "Sawasdee! ${name} i kuchnia tajska. Balans smaków czy ostry chaos? Oto jest pytanie.",
+        "Pad thai, które zrobi ${name}, musi mieć idealną harmonię. Jak yin i yang, tylko że z makaronem.",
         "Zielone curry od ${name}? Mam nadzieję, że jest na mleczku kokosowym, a nie na łzach naszych wrogów.",
-        "Słyszałem, że ${name} opanował/a sztukę tajskiej kuchni. Oby nie była to sztuka walki z ostrością!"
+        "Poziom ostrości 'dla Polaka' czy 'dla Taja'? ${name}, określ się, bo to kluczowa informacja.",
+        "Jeśli jedzenie będzie dobre, to wszyscy zrobimy 'wai' (ukłon) w podziękowaniu dla ${name}.",
+"Słyszałem, że ${name} gotuje tak ostro, że Odra zmienia swój bieg, byle dalej od jego/jej kuchni.",
+"Curry od ${name} ma być tak żółte jak stare tramwaje Konstal, które wciąż jeżdżą po mieście. Oby było smaczniejsze."
     ],
     "Turecka": [
-        "Merhaba, ${name}! Czy Twój kebab będzie tak dobry, że zapomnimy o wszystkich innych daniach?",
-        "Jeśli ${name} robi baklavę, to lepiej schowajcie wagę na najbliższy tydzień. Będzie słodko!",
-        "Ponoć hummus od ${name} jest tak kremowy, że można go używać jako maseczki. Ale lepiej zjeść!"
+        "Merhaba! ${name} i kuchnia turecka. Pytanie numer jeden: na grubym czy na cienkim?",
+        "Jeśli ${name} robi baklavę, to lepiej schowajcie wagę na najbliższy tydzień. Będzie słodko i kalorycznie.",
+        "Kebab od szefa kuchni ${name}. Oby był tak dobry, jak ten o 4 nad ranem w centrum miasta.",
+        "Hummus, który podobno robi ${name}, jest tak kremowy, że można go używać jako maseczki. Ale lepiej zjeść.",
+        "Ciekawe, czy ${name} będzie się targować o ostatni kawałek swojego dania. Jak na Grand Bazaar.",
+		"Kebab od ${name} ma być tak dobry, że aż wszystkie budy z kebabem koło Dworca Głównego zwijają interes.",
+"Czy to prawda, że ${name} robi kawę po turecku tak mocną, że stawia na nogi szybciej niż informacja o awarii na Moście Zwierzynieckim?"
     ],
     "Wietnam.": [
-        "Xin chào, ${name}! Czy Twoja zupa Pho będzie tak aromatyczna, że jej zapach dotrze aż do Hanoi?",
-        "Sajgonki od ${name}? Szykujcie się na chrupanie, które będzie słychać w całym województwie.",
-        "Podobno ${name} robi Bánh mì. To kanapka tak legendarna, że ma własny fanklub. Zapisuję się!"
+        "Xin chào! ${name} serwuje Wietnam. Czy zupa Pho będzie lekiem na całe zło tego świata? Miejmy nadzieję.",
+        "Chrupanie sajgonek od ${name} podobno będzie słychać w całym województwie. Cisza na planie!",
+        "Podobno ${name} robi Bánh mì. To kanapka tak legendarna, że ma własny fanklub. Zapisuję się!",
+        "Kawa po wietnamsku też będzie? ${name}, nie rzucaj słów na wiatr, bo narobisz nadziei.",
+        "Danie od ${name} będzie tak świeże i ziołowe, że poczujemy się jak na skuterze w Hanoi.",
+		"Zupa Pho od ${name} podobno pachnie tak intensywnie, że czuć ją aż na Psim Polu, mimo że ${name} mieszka na Gądowie.",
+"Sajgonki od ${name} będą tak chrupiące, jak dźwięk wykolejającego się tramwaju. Oby były przyjemniejsze w odbiorze."
     ],
     "Włoska": [
-        "Mamma mia, ${name}! Czy to będzie pizza na cienkim, czy grubym... podkładzie do dobrej imprezy?",
-        "Podobno ${name} robi tiramisu tak dobre, że anioły śpiewają. Czekamy na ten niebiański chór!",
-        "Jeśli Twoje spaghetti, ${name}, będzie tak dobre, jak wygląda, to reszta dań może się schować."
+        "Mamma mia! ${name} i kuchnia włoska. Ananas na pizzy jest oficjalnie zakazany, prawda?",
+        "Podobno tiramisu, które robi ${name}, jest tak dobre, że anioły śpiewają. Czekamy na ten niebiański chór.",
+        "Spaghetti od ${name}? Ciekawe, kto pierwszy upapra sobie całą koszulę sosem.",
+        "Jeśli ${name} robi carbonarę, to sprawdzimy, czy jest na śmietanie. Będzie afera.",
+        "Włosi podobno rozmawiają rękami. Ciekawe, czy danie od ${name} będzie tak ekspresyjne.",
+		"Pizza od ${name} ma być tak duża, że trzeba ją będzie transportować jak elementy Mostu Rędzińskiego.",
+"Jeśli carbonara od ${name} będzie na śmietanie, to wyślemy go/ją na przymusowe zwiedzanie Hydropolis, żeby zrozumiał/a, czym jest woda."
     ],
     "Polska": [
-        "Hej, ${name}! Czy Twoje pierogi będą z wody czy odsmażane? To pytanie dzieli naród bardziej niż polityka.",
-        "Schabowy od ${name} podobno ma rozmiar małego kontynentu. Przygotujcie żołądki.",
-        "Słyszałem, że bigos od ${name} 'przegryzał się' od ostatniej imprezy. To będzie moc!"
+        "No siema! ${name} i kuchnia polska. Schabowy będzie z kostką czy bez? To ważne.",
+        "Pierogi od ${name}... Lepsze niż u mamy? Odważna deklaracja, zobaczymy, co z tego wyjdzie.",
+        "Słyszałem, że bigos, który gotuje ${name}, ma tyle lat, co węgiel. Musi być dobry.",
+        "Jeśli ${name} zrobił/a sałatkę jarzynową, to pytanie brzmi: z groszkiem czy bez? To dzieli rodziny.",
+        "Rosół od ${name} podobno leczy wszystko, od kaca po złamane serce. Potrzebujemy go!",
+		"Schabowy od ${name} podobno będzie tak duży, że przykryje cały Rynek, razem z krasnalami.",
+"Bigos, który ugotował/a ${name}, jest podobno tak kwaśny, że aż mordki lwów przy Placu Jana Pawła II się wykrzywiają."
     ]
 };
 	
@@ -1230,6 +1305,7 @@ const countdownInterval = setInterval(() => {
 
 </body>
 </html>
+
 
 
 
