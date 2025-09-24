@@ -213,6 +213,45 @@
 		    gap: 8px;                /* Tworzy mały odstęp między kafelkami */
 		    margin-top: 1.5rem;      /* Odstęp od nagłówka "Pula Dostępnych Kuchni" */
 		}
+
+		@media (max-width: 768px) {
+    #results-table thead {
+        display: none; /* Ukryj nagłówki na mobile */
+    }
+
+    #results-table tbody tr {
+        display: block; /* Każdy wiersz to osobny blok */
+        margin-bottom: 1.5rem;
+        border: 1px solid var(--border-color);
+        border-radius: var(--border-radius);
+        padding: 0.5rem;
+    }
+    
+    #results-table tbody tr:nth-child(even) {
+        background-color: transparent; /* Resetujemy tło "zebry" */
+    }
+    
+    #results-table td {
+        display: flex; /* Ustawiamy komórki w trybie flex */
+        justify-content: space-between; /* Etykieta po lewej, wartość po prawej */
+        align-items: center;
+        text-align: right; /* Wyrównaj tekst wartości do prawej */
+        padding: 0.8rem 0.5rem;
+        border-bottom: 1px solid var(--border-color);
+    }
+    
+    #results-table td:last-child {
+        border-bottom: none; /* Usuń ostatnią kreskę */
+    }
+
+    #results-table td::before {
+        content: attr(data-label); /* Pobierz tekst etykiety z atrybutu */
+        font-weight: 600;
+        color: var(--text-muted);
+        text-align: left; /* Wyrównaj etykietę do lewej */
+        margin-right: 1rem;
+    }
+}
 		
 		/* Zmniejszamy rozmiar kafelków wewnątrz galerii */
 		.cuisine-gallery .carousel-item {
@@ -822,6 +861,7 @@ const countdownInterval = setInterval(() => {
 
 </body>
 </html>
+
 
 
 
