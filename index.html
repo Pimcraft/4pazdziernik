@@ -856,23 +856,27 @@ const fetchWithRetry = async (url, options, retries = MAX_RETRIES) => {
         "Słyszałem, że bigos od ${name} 'przegryzał się' od ostatniej imprezy. To będzie moc!"
     ]
 };
+	
 
-	const startTipCarousel = () => {
+	// Zmodyfikuj tę funkcję
+const startTipCarousel = () => {
+    // Zatrzymaj stary interwał z domyślnymi tekstami
+    if (window.genericInterval) {
+        clearInterval(window.genericInterval);
+    }
+    
     const tipBubble = document.getElementById('tip-bubble');
     const tipText = document.getElementById('tip-text');
     if (!tipBubble || !tipText) return;
 
+    // Reszta funkcji pozostaje BEZ ZMIAN...
     let messagePlaylist = [];
-
-    // 1. Zbierz potwierdzonych gości z przypisaną kuchnią
     const confirmedGuests = appData.participants.filter(p => p.attending === true && p.cuisine);
 
-    // 2. Stwórz spersonalizowaną listę tekstów
     if (confirmedGuests.length > 0) {
         confirmedGuests.forEach(guest => {
-            const cuisineFullName = guest.cuisine; // np. "Meksykańska 🌮"
-            const cuisineBaseName = Object.keys(cuisineTips).find(key => cuisineFullName.includes(key));
-            
+            const cuisineFullName = guest.cuisine;
+            const cuisineBaseName = Object.keys(cuisineTips).find(key => cuisineFullName.startsWith(key));
             if (cuisineBaseName && cuisineTips[cuisineBaseName]) {
                 const personalizedTips = cuisineTips[cuisineBaseName].map(tip => tip.replace('${name}', guest.base));
                 messagePlaylist.push(...personalizedTips);
@@ -880,36 +884,51 @@ const fetchWithRetry = async (url, options, retries = MAX_RETRIES) => {
         });
     }
 
-    // 3. Jeśli nie ma spersonalizowanych tekstów, użyj domyślnych
     if (messagePlaylist.length === 0) {
         messagePlaylist.push(...cuisineTips.default);
     }
 
-    // 4. Wymieszaj teksty dla lepszego efektu
+    messagePlaylist.sort(() => Math.random() - 0.5);
+    let currentTipIndex = 0;
+    const showNextTip = () => {
+        tipBubble.classList.remove('visible');
+        setTimeout(() => {
+            tipText.textContent = messagePlaylist[currentTipIndex];
+            currentTipIndex = (currentTipIndex + 1) % messagePlaylist.length;
+            tipBubble.classList.add('visible');
+        }, 600);
+    };
+    
+    // Uruchom od razu nowy cykl (bez czekania)
+    showNextTip(); 
+    setInterval(showNextTip, 8000);
+};
+
+	// Nowa funkcja do natychmiastowego startu
+const startGenericTipCarousel = () => {
+    const tipBubble = document.getElementById('tip-bubble');
+    const tipText = document.getElementById('tip-text');
+    if (!tipBubble || !tipText) return;
+
+    // Używamy tylko domyślnych tekstów
+    let messagePlaylist = [...cuisineTips.default];
     messagePlaylist.sort(() => Math.random() - 0.5);
     
     let currentTipIndex = 0;
 
     const showNextTip = () => {
-        // Ukryj dymek (animacja fade-out)
         tipBubble.classList.remove('visible');
-
-        // Poczekaj na koniec animacji ukrywania
         setTimeout(() => {
-            // Zmień tekst
             tipText.textContent = messagePlaylist[currentTipIndex];
             currentTipIndex = (currentTipIndex + 1) % messagePlaylist.length;
-            
-            // Pokaż dymek z nowym tekstem (animacja fade-in)
             tipBubble.classList.add('visible');
-        }, 600); // Czas musi być nieco dłuższy niż transition w CSS
+        }, 600);
     };
     
-    // Pokaż pierwszy tekst od razu
-    setTimeout(showNextTip, 2000); // Dajmy chwilę na załadowanie strony
-
-    // Ustaw interwał zmiany tekstów
-    setInterval(showNextTip, 8000); // Zmieniaj tekst co 8 sekund
+    setTimeout(showNextTip, 1500); // Start po 1.5s
+    
+    // Zapisujemy interwał do zmiennej globalnej, aby go później zatrzymać
+    window.genericInterval = setInterval(showNextTip, 8000); 
 };
 
 const loadData = async () => {
@@ -1105,12 +1124,14 @@ document.addEventListener('DOMContentLoaded', () => {
         
         initializeCarousel(appData.availableCuisines);
         goToStep('drawing');
+		
     });
 
     spinButton.addEventListener('click', startCarousel);
     
     loadData();
     goToStep('invite');
+	startGenericTipCarousel();
 });
 // --- DODATKOWA LOGIKA DLA GALERII MAP ---
     const lightbox = document.getElementById('lightbox');
@@ -1158,6 +1179,7 @@ const countdownInterval = setInterval(() => {
 
 </body>
 </html>
+
 
 
 
