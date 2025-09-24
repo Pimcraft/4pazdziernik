@@ -538,7 +538,7 @@ const renderHistoryTable = () => {
         const attendingText = p.attending === null ? '❔' : (p.attending ? '✅ Tak' : '❌ Nie');
         const guestText = p.attending ? (p.guest ? '👤 Tak' : '➖ Nie') : '➖';
         const cuisineText = p.attending ? (p.cuisine || '<em>Czeka na losowanie</em>') : '➖';
-        row.innerHTML = `<td>${p.base}</td><td>${attendingText}</td><td>${guestText}</td><td>${cuisineText}</td>`;
+        row.innerHTML = `<td data-label="Imię">${p.base}</td><td data-label="Obecność">${attendingText}</td><td data-label="+1">${guestText}</td><td data-label="Kuchnia">${cuisineText}</td>`;
         historyBody.appendChild(row);
     });
 };
@@ -822,6 +822,7 @@ const countdownInterval = setInterval(() => {
 
 </body>
 </html>
+
 
 
 
