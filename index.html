@@ -374,29 +374,48 @@
 		}
 		/* --- NOWE STYLE DLA DYMKU Z PORADAMI --- */
 		#tip-bubble {
-		    margin: 1.5rem auto 0;
-		    max-width: 80%;
-		    background-color: rgba(15, 52, 96, 0.5);
-		    border-left: 3px solid var(--primary-color);
-		    padding: 1rem 1.5rem;
-		    border-radius: 0 var(--border-radius) var(--border-radius) 0;
-		    text-align: center;
-		    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
-		    opacity: 0; /* Domyślnie ukryty */
-		    transform: translateY(20px); /* Startuje lekko niżej */
-		}
-		
-		#tip-bubble.visible {
-		    opacity: 1;
-		    transform: translateY(0);
-		}
-		
-		#tip-bubble p {
-		    color: var(--text-muted);
-		    font-style: italic;
-		    margin-bottom: 0;
-		    font-size: 0.9rem;
-		}
+    position: relative; /* Potrzebne do pozycjonowania "ogonka" */
+    margin: 2.5rem auto 0; /* Zwiększony margines górny dla "ogonka" */
+    max-width: 80%;
+    /* Nowy, atrakcyjny gradient */
+    background: linear-gradient(145deg, var(--border-color), var(--card-color));
+    border: 1px solid var(--border-color);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3); /* Wyraźniejszy cień */
+    padding: 1.2rem 1.8rem;
+    border-radius: var(--border-radius); /* Zaokrąglenie rogów */
+    text-align: center;
+    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+    opacity: 0; /* Domyślnie ukryty */
+    transform: translateY(20px);
+}
+
+/* "Ogonek" dymka skierowany w górę */
+#tip-bubble::before {
+    content: '';
+    position: absolute;
+    top: -10px; /* Umieszcza "ogonek" nad dymkiem */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid var(--border-color); /* Kolor dopasowany do ramki */
+}
+
+#tip-bubble.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+#tip-bubble p {
+    color: var(--text-color); /* Lepszy kontrast tekstu */
+    font-style: normal; /* Usunięcie kursywy dla czytelności */
+    font-weight: 400;
+    margin-bottom: 0;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
     </style>
 </head>
 <body>
@@ -1107,6 +1126,7 @@ const countdownInterval = setInterval(() => {
 
 </body>
 </html>
+
 
 
 
