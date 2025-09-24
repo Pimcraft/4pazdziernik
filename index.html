@@ -457,6 +457,11 @@
 .toast-notification.exit {
     animation: slideOut 0.5s cubic-bezier(0.5, 0, 0.75, 0) forwards;
 }
+		/* Dodaj tę klasę w sekcji <style> */
+.toast-name-highlight {
+    color: var(--primary-color);
+    font-weight: 600;
+}
 
 /* NOWE, POŁĄCZONE KEYFRAMES */
 @keyframes toast-lifecycle {
@@ -470,6 +475,7 @@
     /* Faza wyjścia (7s -> 7.5s) */
     100% { transform: translateX(120%); }
 }
+		
 
 /* Stara animacja wyjścia, nadal potrzebna do usuwania ręcznego */
 @keyframes slideOut {
@@ -977,37 +983,38 @@ let messagePlaylist = [];
 let toastInterval = null;
 
 // Funkcja do pokazywania pojedynczego powiadomienia
-// ZASTĄP STARĄ FUNKCJĘ TĄ NOWĄ WERSJĄ
+// ZASTĄP TĘ FUNKCJĘ PONIŻSZĄ WERSJĄ
 const showToast = (message) => {
     const container = document.getElementById('toast-container');
     if (!container) return;
 
     const isMobile = window.innerWidth <= 768;
-    const maxToasts = isMobile ? 1 : 6; // Zmieniono na 6 dla desktopu, jak było w założeniach
+    const maxToasts = isMobile ? 1 : 6;
 
-    // Na mobile, jeśli już jest powiadomienie, usuń je natychmiast
     if (isMobile && container.children.length > 0) {
-        // Używamy klasy .exit do animacji wyjścia
         for (const child of container.children) {
              child.classList.add('exit');
              setTimeout(() => child.remove(), 500);
         }
     }
 
-    // Usuń najstarsze powiadomienia, jeśli przekroczono limit
     while (container.children.length >= maxToasts) {
         const oldestToast = container.children[0];
         oldestToast.classList.add('exit');
-        setTimeout(() => oldestToast.remove(), 500); // Daj czas na animację
-        // Usuń od razu z kolekcji, by pętla się nie zapętliła
+        setTimeout(() => oldestToast.remove(), 500);
         oldestToast.remove();
     }
     
     const toast = document.createElement('div');
     toast.className = 'toast-notification';
-    toast.textContent = message;
 
-    // Po zakończeniu animacji CSS (która trwa 7.5s), usuń element z DOM
+    // --- NOWA LOGIKA DO STYLOWANIA IMIENIA ---
+    // Zamieniamy %%Imię%% na <span class="toast-name-highlight">Imię</span>
+    const styledMessage = message.replace(/%%(.*?)%%/g, `<span class="toast-name-highlight">$1</span>`);
+    
+    // Używamy innerHTML zamiast textContent, aby style zadziałały
+    toast.innerHTML = styledMessage;
+
     toast.addEventListener('animationend', () => {
         toast.remove();
     });
@@ -1016,10 +1023,10 @@ const showToast = (message) => {
 };
 
 // Główna funkcja inicjująca system
+// ZASTĄP TĘ FUNKCJĘ PONIŻSZĄ WERSJĄ
 const initializeToastSystem = () => {
     let currentMessageIndex = 0;
     
-    // Generowanie playlisty
     const generatePlaylist = () => {
         const confirmedGuests = appData.participants.filter(p => p.attending === true && p.cuisine);
         let personalizedTips = [];
@@ -1029,21 +1036,22 @@ const initializeToastSystem = () => {
                 const cuisineFullName = guest.cuisine;
                 const cuisineBaseName = Object.keys(cuisineTips).find(key => cuisineFullName.startsWith(key));
                 if (cuisineBaseName && cuisineTips[cuisineBaseName]) {
-                    const tips = cuisineTips[cuisineBaseName].map(tip => tip.replace('${name}', guest.base));
+                    
+                    // --- ZMIANA W TEJ LINII ---
+                    // Zamiast imienia, wstawiamy imię ze znacznikami %%
+                    const tips = cuisineTips[cuisineBaseName].map(tip => tip.replace(/\$\{name\}/g, `%%${guest.base}%%`));
+                    
                     personalizedTips.push(...tips);
                 }
             });
         }
         
-        // Połącz spersonalizowane z domyślnymi i wymieszaj
         messagePlaylist = [...personalizedTips, ...cuisineTips.default];
         messagePlaylist.sort(() => Math.random() - 0.5);
     };
 
-    // Generuj playlistę po raz pierwszy (tylko z domyślnymi)
     generatePlaylist();
 
-    // Uruchom interwał
     if (toastInterval) clearInterval(toastInterval);
     toastInterval = setInterval(() => {
         if (messagePlaylist.length > 0) {
@@ -1051,12 +1059,11 @@ const initializeToastSystem = () => {
             showToast(message);
             currentMessageIndex = (currentMessageIndex + 1) % messagePlaylist.length;
         }
-    }, 5000); // Nowe powiadomienie co 5 sekund
+    }, 5000);
 
-    // Zwróć funkcję do ponownego wygenerowania playlisty
     return generatePlaylist;
 };
-
+	
 const loadData = async () => {
     try {
         const response = await fetchWithRetry(GOOGLE_SCRIPT_URL); 
@@ -1305,6 +1312,7 @@ const countdownInterval = setInterval(() => {
 
 </body>
 </html>
+
 
 
 
