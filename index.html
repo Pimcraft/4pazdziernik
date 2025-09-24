@@ -715,9 +715,9 @@ const fetchWithRetry = async (url, options, retries = MAX_RETRIES) => {
         "Plotka głosi, że gospodarze ukryli najlepsze trunki. Czas na poszukiwania!",
         "Pamiętaj: kalorie zjedzone w dobrym towarzystwie nie tuczą. To fakt naukowy.",
         "Trwa zakulisowa walka o to, kto przyniesie najlepsze danie. Stawki są wysokie.",
-        "Jeśli muzyka będzie zła, pamiętaj, że zawsze można zacząć grać w planszówki.",
         "Koty już oceniają, czyje kolana będą dziś najlepszym tronem. Przygotuj się."
     ],
+    // --- Kuchnie już przypisane ---
     "Niemiecka": [
         "${name}, liczymy na porządny, niemiecki Ordnung na talerzu! Würst musi być idealnie prosty.",
         "Czy to prawda, ${name}, że Twój Schnitzel będzie większy niż mapa Berlina? Zobaczymy!",
@@ -733,37 +733,76 @@ const fetchWithRetry = async (url, options, retries = MAX_RETRIES) => {
         "Podobno ${name} robi butter chicken, który jest bardziej kremowy niż obietnice polityków. Czekam!",
         "Jeśli ${name} przyniesie coś z dużą ilością chili, przygotujcie gaśnice... i szklanki z mlekiem."
     ],
-    "Gruziń.": [ // <-- Dodany klucz
+    "Gruziń.": [
         "Gaumarjos, ${name}! Czy Twoje chaczapuri będzie miało wystarczająco dużo sera, by uszczęśliwić cały naród?",
         "Słyszałem, że ${name} szykuje chinkali. Uczymy się je jeść bez utraty cennego rosołku!",
         "Jeśli ${name} przyniesie wino z Gruzji, impreza oficjalnie osiągnie status legendy."
     ],
-    "Hiszp.": [ // <-- Poprawiony klucz
+    "Hiszp.": [
         "${name}, czy Twoja paella będzie miała więcej owoców morza niż jest uczestników imprezy?",
         "Tapas od ${name}? Brzmi jak idealny plan, żeby spróbować wszystkiego i nie wybrać niczego konkretnego. Jak w życiu.",
         "Czy sangria od ${name} będzie na tyle mocna, żebyśmy wszyscy zaczęli mówić po hiszpańsku? ¡Ojalá!"
     ],
-    "Francuska": [ // <-- Dodany klucz
+    "Francuska": [
         "Bonjour, ${name}! Czy Twoje danie będzie tak wykwintne, jak francuskie perfumy?",
         "Jeśli ${name} robi zupę cebulową, to mam nadzieję, że będzie miała grzankę z serem grubą na palec.",
         "Bagietki, sery, wino... ${name}, czy Ty na pewno robisz jedno danie, a nie całą francuską ucztę?"
     ],
-    // Poniżej reszta kuchni z poprzedniej wersji, na wszelki wypadek
-    "Meksykańska": [
-        "Hola ${name}! Czy Twoje tacos będą tak ostre, jak atmosfera po trzeciej kolejce?",
-        "${name}, mam nadzieję, że Twoja quesadilla będzie bardziej sycąca niż plotki, które dziś usłyszymy. 😉"
+    // --- Nowe teksty dla pozostałych kuchni ---
+    "Czeska": [
+        "Ahoj, ${name}! Czy do Twoich knedlików będzie gulasz tak gęsty, że aż łyżka stanie?",
+        "Smažený sýr od ${name} podobno ciągnie się bardziej niż fabuła w czeskich filmach. Sprawdzimy!",
+        "Czy to prawda ${name}, że Twoje danie najlepiej popić zimnym... napojem chmielowym? 😉"
     ],
-    "Włoska": [
-        "Mamma mia, ${name}! Czy to będzie pizza na cienkim, czy grubym... podkładzie do dobrej imprezy?",
-        "Podobno ${name} robi tiramisu tak dobre, że anioły śpiewają. Czekamy na ten niebiański chór!"
+    "Grecka": [
+        "Opa, ${name}! Czy Twoja moussaka będzie miała tyle warstw, co starożytna grecka historia?",
+        "Souvlaki od ${name}? Mam nadzieję, że będą tak dobre, że aż bogowie na Olimpie poczują zazdrość.",
+        "Podobno ${name} robi sałatkę z fetą tak autentyczną, że można poczuć bryzę z Santorini."
     ],
     "Japońska": [
         "${name}, czy Twoje sushi będzie zwinięte równie perfekcyjnie, co plany na tę noc?",
-        "Uważajcie! Podobno wasabi od ${name} potrafi odblokować wspomnienia z poprzednich wcieleń."
+        "Uważajcie! Podobno wasabi od ${name} potrafi odblokować wspomnienia z poprzednich wcieleń.",
+        "Słyszałem, że ${name} przyniesie ramen. Oby był tak głęboki w smaku, jak nasze rozmowy o 3 nad ranem."
+    ],
+    "Koreań.": [
+        "Annyeong, ${name}! Czy Twoje kimchi będzie tak ostre, że aż K-Pop sam zacznie grać w głośnikach?",
+        "Bibimbap od ${name}? Mieszajcie dobrze, podobno im większy bałagan w misce, tym lepszy smak!",
+        "Słyszałem, że ${name} robi bulgogi. To danie jest tak dobre, że staje się narodowym skarbem... tej imprezy."
+    ],
+    "Meksyk.": [
+        "Hola ${name}! Czy Twoje tacos będą tak ostre, jak atmosfera po trzeciej kolejce?",
+        "Słyszałem, że ${name} robi guacamole, które leczy złamane serca. Oby nie było dziś potrzebne!",
+        "${name}, mam nadzieję, że Twoja quesadilla będzie bardziej sycąca niż plotki, które dziś usłyszymy."
+    ],
+    "Portugalska": [
+        "Olá, ${name}! Czy Twoje danie z owocami morza będzie tak świeże, jak poranek w Lizbonie?",
+        "Pastel de nata od ${name}? Jeśli tak, to oficjalnie ogłaszam konkurs, kto zje najwięcej.",
+        "Jeśli ${name} przyniesie bacalhau, to szykujcie się na smak Portugalii w najlepszym wydaniu."
+    ],
+    "Tajska": [
+        "${name}, czy Twoje pad thai będzie idealnie balansować między słodkim, kwaśnym a ostrym? Cała nadzieja w Tobie!",
+        "Zielone curry od ${name}? Mam nadzieję, że jest na mleczku kokosowym, a nie na łzach naszych wrogów.",
+        "Słyszałem, że ${name} opanował/a sztukę tajskiej kuchni. Oby nie była to sztuka walki z ostrością!"
+    ],
+    "Turecka": [
+        "Merhaba, ${name}! Czy Twój kebab będzie tak dobry, że zapomnimy o wszystkich innych daniach?",
+        "Jeśli ${name} robi baklavę, to lepiej schowajcie wagę na najbliższy tydzień. Będzie słodko!",
+        "Ponoć hummus od ${name} jest tak kremowy, że można go używać jako maseczki. Ale lepiej zjeść!"
+    ],
+    "Wietnam.": [
+        "Xin chào, ${name}! Czy Twoja zupa Pho będzie tak aromatyczna, że jej zapach dotrze aż do Hanoi?",
+        "Sajgonki od ${name}? Szykujcie się na chrupanie, które będzie słychać w całym województwie.",
+        "Podobno ${name} robi Bánh mì. To kanapka tak legendarna, że ma własny fanklub. Zapisuję się!"
+    ],
+    "Włoska": [
+        "Mamma mia, ${name}! Czy to będzie pizza na cienkim, czy grubym... podkładzie do dobrej imprezy?",
+        "Podobno ${name} robi tiramisu tak dobre, że anioły śpiewają. Czekamy na ten niebiański chór!",
+        "Jeśli Twoje spaghetti, ${name}, będzie tak dobre, jak wygląda, to reszta dań może się schować."
     ],
     "Polska": [
         "Hej, ${name}! Czy Twoje pierogi będą z wody czy odsmażane? To pytanie dzieli naród bardziej niż polityka.",
-        "Schabowy od ${name} podobno ma rozmiar małego kontynentu. Przygotujcie żołądki."
+        "Schabowy od ${name} podobno ma rozmiar małego kontynentu. Przygotujcie żołądki.",
+        "Słyszałem, że bigos od ${name} 'przegryzał się' od ostatniej imprezy. To będzie moc!"
     ]
 };
 
@@ -1068,6 +1107,7 @@ const countdownInterval = setInterval(() => {
 
 </body>
 </html>
+
 
 
 
