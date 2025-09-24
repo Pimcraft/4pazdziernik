@@ -421,32 +421,54 @@
     transform: translateY(20px);
 }
 
-/* "Ogonek" dymka skierowany w górę */
-#tip-bubble::before {
-    content: '';
-    position: absolute;
-    top: -10px; /* Umieszcza "ogonek" nad dymkiem */
-    left: 50%;
-    transform: translateX(-50%);
-    width: 0;
-    height: 0;
-    border-left: 10px solid transparent;
-    border-right: 10px solid transparent;
-    border-bottom: 10px solid var(--border-color); /* Kolor dopasowany do ramki */
+/* --- NOWE STYLE DLA POWIADOMIEŃ TYPU TOAST --- */
+#toast-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+    z-index: 2000;
+    width: clamp(280px, 80vw, 350px); /* Elastyczna szerokość */
 }
 
-#tip-bubble.visible {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-#tip-bubble p {
-    color: var(--text-color); /* Lepszy kontrast tekstu */
-    font-style: normal; /* Usunięcie kursywy dla czytelności */
-    font-weight: 400;
-    margin-bottom: 0;
-    font-size: 0.95rem;
+.toast-notification {
+    width: 100%;
+    background: linear-gradient(145deg, var(--border-color), var(--card-color));
+    color: var(--text-color);
+    padding: 16px 20px;
+    border-radius: 12px;
+    border: 1px solid #0f3460;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+    font-size: 0.9rem;
     line-height: 1.5;
+    animation: slideIn 0.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+    transform: translateX(120%);
+}
+
+.toast-notification.exit {
+    animation: slideOut 0.5s cubic-bezier(0.5, 0, 0.75, 0) forwards;
+}
+
+@keyframes slideIn {
+    to { transform: translateX(0); }
+}
+
+@keyframes slideOut {
+    from { transform: translateX(0); }
+    to { transform: translateX(120%); }
+}
+
+/* --- STYLE DLA TELEFONÓW --- */
+@media (max-width: 768px) {
+    #toast-container {
+        right: 10px;
+        bottom: 10px;
+        left: 10px;
+        width: auto;
+    }
 }
     </style>
 </head>
@@ -467,9 +489,7 @@
 				    <div><span id="minutes">00</span>Minut</div>
 				    <div><span id="seconds">00</span>Sekund</div>
 				</div>
-				 <div id="tip-bubble">
-				    <p id="tip-text">Ładowanie protokołu... dobrej zabawy...</p>
-				</div>
+
                 <p>Zanim przejdziemy dalej, odpowiedz na jedno, arcyważne pytanie...</p>
                 <h2>Czy <u>4 października</u> masz ochotę uczestniczyć w tej imprezie?</h2>
                 <div class="lore-section">
@@ -606,7 +626,7 @@
 </div>
         </div>
     </div>
-    
+    <div id="toast-container"></div>
 
 <script>
 // 1. KONFIGURACJA
@@ -858,77 +878,95 @@ const fetchWithRetry = async (url, options, retries = MAX_RETRIES) => {
 };
 	
 
-	// Zmodyfikuj tę funkcję
-const startTipCarousel = () => {
-    // Zatrzymaj stary interwał z domyślnymi tekstami
-    if (window.genericInterval) {
-        clearInterval(window.genericInterval);
-    }
-    
-    const tipBubble = document.getElementById('tip-bubble');
-    const tipText = document.getElementById('tip-text');
-    if (!tipBubble || !tipText) return;
+	// --- NOWY SYSTEM POWIADOMIEŃ TOAST ---
 
-    // Reszta funkcji pozostaje BEZ ZMIAN...
-    let messagePlaylist = [];
-    const confirmedGuests = appData.participants.filter(p => p.attending === true && p.cuisine);
+// Globalna playlista i interwał
+let messagePlaylist = [];
+let toastInterval = null;
 
-    if (confirmedGuests.length > 0) {
-        confirmedGuests.forEach(guest => {
-            const cuisineFullName = guest.cuisine;
-            const cuisineBaseName = Object.keys(cuisineTips).find(key => cuisineFullName.startsWith(key));
-            if (cuisineBaseName && cuisineTips[cuisineBaseName]) {
-                const personalizedTips = cuisineTips[cuisineBaseName].map(tip => tip.replace('${name}', guest.base));
-                messagePlaylist.push(...personalizedTips);
-            }
-        });
-    }
+// Funkcja do pokazywania pojedynczego powiadomienia
+const showToast = (message) => {
+    const container = document.getElementById('toast-container');
+    if (!container) return;
 
-    if (messagePlaylist.length === 0) {
-        messagePlaylist.push(...cuisineTips.default);
-    }
+    const isMobile = window.innerWidth <= 768;
+    const maxToasts = isMobile ? 1 : 6;
 
-    messagePlaylist.sort(() => Math.random() - 0.5);
-    let currentTipIndex = 0;
-    const showNextTip = () => {
-        tipBubble.classList.remove('visible');
+    // Na mobile, jeśli już jest powiadomienie, usuń je
+    if (isMobile && container.children.length > 0) {
+        container.children[0].classList.add('exit');
         setTimeout(() => {
-            tipText.textContent = messagePlaylist[currentTipIndex];
-            currentTipIndex = (currentTipIndex + 1) % messagePlaylist.length;
-            tipBubble.classList.add('visible');
-        }, 600);
-    };
+            if (container.children[0]) container.children[0].remove();
+        }, 500); // Czas na animację wyjścia
+    }
+
+    // Usuń najstarsze powiadomienia, jeśli przekroczono limit
+    while (container.children.length >= maxToasts) {
+        container.children[0].classList.add('exit');
+        setTimeout(() => {
+            if (container.children[0]) container.children[0].remove();
+        }, 500);
+        // synchroniczne usunięcie z DOM, aby pętla działała poprawnie
+        container.children[0].remove();
+    }
     
-    // Uruchom od razu nowy cykl (bez czekania)
-    showNextTip(); 
-    setInterval(showNextTip, 8000);
+    const toast = document.createElement('div');
+    toast.className = 'toast-notification';
+    toast.textContent = message;
+
+    // Wstawienie na dole stosu
+    container.appendChild(toast);
+
+    // Automatyczne usunięcie po 7 sekundach
+    setTimeout(() => {
+        toast.classList.add('exit');
+        // Po zakończeniu animacji wyjścia, usuń element z DOM
+        setTimeout(() => {
+            toast.remove();
+        }, 500);
+    }, 7000);
 };
 
-	// Nowa funkcja do natychmiastowego startu
-const startGenericTipCarousel = () => {
-    const tipBubble = document.getElementById('tip-bubble');
-    const tipText = document.getElementById('tip-text');
-    if (!tipBubble || !tipText) return;
-
-    // Używamy tylko domyślnych tekstów
-    let messagePlaylist = [...cuisineTips.default];
-    messagePlaylist.sort(() => Math.random() - 0.5);
+// Główna funkcja inicjująca system
+const initializeToastSystem = () => {
+    let currentMessageIndex = 0;
     
-    let currentTipIndex = 0;
+    // Generowanie playlisty
+    const generatePlaylist = () => {
+        const confirmedGuests = appData.participants.filter(p => p.attending === true && p.cuisine);
+        let personalizedTips = [];
 
-    const showNextTip = () => {
-        tipBubble.classList.remove('visible');
-        setTimeout(() => {
-            tipText.textContent = messagePlaylist[currentTipIndex];
-            currentTipIndex = (currentTipIndex + 1) % messagePlaylist.length;
-            tipBubble.classList.add('visible');
-        }, 600);
+        if (confirmedGuests.length > 0) {
+            confirmedGuests.forEach(guest => {
+                const cuisineFullName = guest.cuisine;
+                const cuisineBaseName = Object.keys(cuisineTips).find(key => cuisineFullName.startsWith(key));
+                if (cuisineBaseName && cuisineTips[cuisineBaseName]) {
+                    const tips = cuisineTips[cuisineBaseName].map(tip => tip.replace('${name}', guest.base));
+                    personalizedTips.push(...tips);
+                }
+            });
+        }
+        
+        // Połącz spersonalizowane z domyślnymi i wymieszaj
+        messagePlaylist = [...personalizedTips, ...cuisineTips.default];
+        messagePlaylist.sort(() => Math.random() - 0.5);
     };
-    
-    setTimeout(showNextTip, 1500); // Start po 1.5s
-    
-    // Zapisujemy interwał do zmiennej globalnej, aby go później zatrzymać
-    window.genericInterval = setInterval(showNextTip, 8000); 
+
+    // Generuj playlistę po raz pierwszy (tylko z domyślnymi)
+    generatePlaylist();
+
+    // Uruchom interwał
+    if (toastInterval) clearInterval(toastInterval);
+    toastInterval = setInterval(() => {
+        if (messagePlaylist.length > 0) {
+            const message = messagePlaylist[currentMessageIndex];
+            showToast(message);
+            currentMessageIndex = (currentMessageIndex + 1) % messagePlaylist.length;
+        }
+    }, 5000); // Nowe powiadomienie co 5 sekund
+
+    // Zwróć funkcję do ponownego wygenerowania playlisty
+    return generatePlaylist;
 };
 
 const loadData = async () => {
@@ -939,7 +977,7 @@ const loadData = async () => {
         renderHistoryTable();
         populatePersonSelect();
         populateRefuseSelect();
-		startTipCarousel();
+		        if (window.regenerateToastPlaylist) window.regenerateToastPlaylist(); 
     } catch (error) {
         console.error("Błąd ładowania danych z Google Sheets:", error);
         historyBody.innerHTML = '<tr><td colspan="4">Nie udało się załadować danych. Odśwież stronę.</td></tr>';
@@ -1131,7 +1169,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     loadData();
     goToStep('invite');
-	startGenericTipCarousel();
+	    window.regenerateToastPlaylist = initializeToastSystem();
 });
 // --- DODATKOWA LOGIKA DLA GALERII MAP ---
     const lightbox = document.getElementById('lightbox');
@@ -1179,6 +1217,7 @@ const countdownInterval = setInterval(() => {
 
 </body>
 </html>
+
 
 
 
