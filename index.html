@@ -1101,7 +1101,7 @@ const loadData = async () => {
         renderHistoryTable();
         populatePersonSelect();
         populateRefuseSelect();
-		        if (window.regenerateToastPlaylist) window.regenerateToastPlaylist(); 
+		        if (window.updateToastPools) window.updateToastPools();
     } catch (error) {
         console.error("Błąd ładowania danych z Google Sheets:", error);
         historyBody.innerHTML = '<tr><td colspan="4">Nie udało się załadować danych. Odśwież stronę.</td></tr>';
@@ -1341,6 +1341,7 @@ const countdownInterval = setInterval(() => {
 
 </body>
 </html>
+
 
 
 
